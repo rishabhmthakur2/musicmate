@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const KeywordMapping = require('../models/keywordMapping');
 
 // Get details of one keywordMapping based on FirstName
-router.get("/getKeywordMapping/:id", async (request, response) => {
+router.get("/:id", async (request, response) => {
   var tempid = request.params.id
 
   if(tempid.length != 24){
@@ -29,7 +29,7 @@ router.get("/getKeywordMapping/:id", async (request, response) => {
 });
 
 // GET listing for all keywordMappings.
-router.get('/keywordMappingsList', function(req, res) {
+router.get('/', function(req, res) {
   KeywordMapping.find({}, function(err, keywordMappings) {
     var keywordMappingMap = {};
 
@@ -42,7 +42,7 @@ router.get('/keywordMappingsList', function(req, res) {
 });
 
 // Create a new keywordMapping
-router.post('/createNewKeywordMapping', (req, res, next) => {
+router.post('/', (req, res, next) => {
   const keywordMapping = new KeywordMapping({
     Instruments: req.body.Instruments,
     Genres: req.body.Genres
@@ -58,7 +58,7 @@ router.post('/createNewKeywordMapping', (req, res, next) => {
 });
 
 // Updating a keywordMapping with a given id
-router.patch("/updateKeywordMapping/:id", async (request, response) => {
+router.patch("/:id", async (request, response) => {
   try {
     await KeywordMapping.findByIdAndUpdate(request.params.id, request.body);
     // await KeywordMapping.save();

@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const Gig = require('../models/gig');
 
 // Get details of one Gig based on FirstName
-router.get("/getGig/:id", async (request, response) => {
+router.get("/:id", async (request, response) => {
   var tempid = request.params.id
 
   if(tempid.length != 24){
@@ -29,7 +29,7 @@ router.get("/getGig/:id", async (request, response) => {
 });
 
 // GET listing for all Gigs.
-router.get('/GigsList', function(req, res) {
+router.get('/', function(req, res) {
   Gig.find({}, function(err, gigs) {
     var gigMap = {};
 
@@ -42,7 +42,7 @@ router.get('/GigsList', function(req, res) {
 });
 
 // Create a new Gig
-router.post('/createNewGig', (req, res, next) => {
+router.post('/', (req, res, next) => {
   const gig = new Gig({
     _id: new mongoose.Types.ObjectId(),
     Userid: req.body.UserId,
@@ -67,7 +67,7 @@ router.post('/createNewGig', (req, res, next) => {
 });
 
 // Updating a Gig with a given id
-router.patch("/updateGig/:id", async (request, response) => {
+router.patch("/:id", async (request, response) => {
   try {
     await Gig.findByIdAndUpdate(request.params.id, request.body);
     // await Gig.save();

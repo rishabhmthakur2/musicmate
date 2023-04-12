@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const User = require('../models/user');
 
 // Get details of one user based on FirstName
-router.get("/getUser/:id", async (request, response) => {
+router.get("/:id", async (request, response) => {
   var tempid = request.params.id
 
   if(tempid.length != 24){
@@ -29,7 +29,7 @@ router.get("/getUser/:id", async (request, response) => {
 });
 
 // GET listing for all users.
-router.get('/usersList', function(req, res) {
+router.get('/', function(req, res) {
   User.find({}, function(err, users) {
     var userMap = {};
 
@@ -42,7 +42,7 @@ router.get('/usersList', function(req, res) {
 });
 
 // Create a new user
-router.post('/createNewUser', (req, res, next) => {
+router.post('/', (req, res, next) => {
   const user = new User({
     _id: new mongoose.Types.ObjectId(),
     FirstName: req.body.FirstName,
@@ -73,7 +73,7 @@ router.post('/createNewUser', (req, res, next) => {
 });
 
 // Updating a user with a given id
-router.patch("/updateUser/:id", async (request, response) => {
+router.patch("/:id", async (request, response) => {
   try {
     await User.findByIdAndUpdate(request.params.id, request.body);
     // await User.save();

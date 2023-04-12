@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const Post = require('../models/post');
 
 // Get details of one post based on FirstName
-router.get("/getPost/:id", async (request, response) => {
+router.get("/:id", async (request, response) => {
   var tempid = request.params.id
 
   if(tempid.length != 24){
@@ -29,7 +29,7 @@ router.get("/getPost/:id", async (request, response) => {
 });
 
 // GET listing for all posts.
-router.get('/postsList', function(req, res) {
+router.get('/', function(req, res) {
   Post.find({}, function(err, posts) {
     var postMap = {};
 
@@ -42,7 +42,7 @@ router.get('/postsList', function(req, res) {
 });
 
 // Create a new post
-router.post('/createNewPost', (req, res, next) => {
+router.post('/', (req, res, next) => {
   const post = new Post({
     _id: new mongoose.Types.ObjectId(),
     Userid: req.body.Userid,
@@ -63,7 +63,7 @@ router.post('/createNewPost', (req, res, next) => {
 });
 
 // Updating a post with a given id
-router.patch("/updatePost/:id", async (request, response) => {
+router.patch("/:id", async (request, response) => {
   try {
     await Post.findByIdAndUpdate(request.params.id, request.body);
     // await Post.save();

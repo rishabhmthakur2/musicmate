@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const MediaItems = require('../models/mediaItems');
 
 // Get details of one mediaItems based on FirstName
-router.get("/getMediaItems/:id", async (request, response) => {
+router.get("/:id", async (request, response) => {
   var tempid = request.params.id
 
   if(tempid.length != 24){
@@ -29,7 +29,7 @@ router.get("/getMediaItems/:id", async (request, response) => {
 });
 
 // GET listing for all mediaItemss.
-router.get('/mediaItemssList', function(req, res) {
+router.get('/', function(req, res) {
   MediaItems.find({}, function(err, mediaItemss) {
     var mediaItemsMap = {};
 
@@ -42,7 +42,7 @@ router.get('/mediaItemssList', function(req, res) {
 });
 
 // Create a new mediaItems
-router.post('/createNewMediaItems', (req, res, next) => {
+router.post('/', (req, res, next) => {
   const mediaItems = new MediaItems({
     _id: new mongoose.Types.ObjectId(),
     UserId: req.body.UserId,
@@ -61,7 +61,7 @@ router.post('/createNewMediaItems', (req, res, next) => {
 });
 
 // Updating a mediaItems with a given id
-router.patch("/updateMediaItems/:id", async (request, response) => {
+router.patch("/:id", async (request, response) => {
   try {
     await MediaItems.findByIdAndUpdate(request.params.id, request.body);
     // await MediaItems.save();
