@@ -1,48 +1,43 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-
-const Gig = require('../models/gig');
+const Gig = require("../models/gig");
 
 // Get details of one Gig based on FirstName
 router.get("/:id", async (request, response) => {
-  var tempid = request.params.id
-
-  if(tempid.length != 24){
-    response.status(400).send("Please send a valid id of 24 characters")
-  }else{
-
-    try{
-      const output = await Gig.find({_id: request.params.id});
+  var tempid = request.params.id;
+  if (tempid.length != 24) {
+    response.status(400).send("Please send a valid id of 24 characters");
+  } else {
+    try {
+      const output = await Gig.find({ _id: request.params.id });
       try {
         response.status(200).send(output);
       } catch (error) {
         response.status(500).send(error);
       }
-    }catch(error){
+    } catch (error) {
       response.status(500).send(error);
     }
   }
-  
-  
 });
 
 // GET listing for all Gigs.
-router.get('/', function(req, res) {
-  Gig.find({}, function(err, gigs) {
+router.get("/", function (req, res) {
+  Gig.find({}, function (err, gigs) {
     var gigMap = {};
 
-    gigs.forEach(function(gig) {
+    gigs.forEach(function (gig) {
       gigMap[gig._id] = gig;
     });
 
-    res.send(gigMap);  
+    res.send(gigMap);
   });
 });
 
 // Create a new Gig
-router.post('/', (req, res, next) => {
+router.post("/", (req, res, next) => {
   const gig = new Gig({
     _id: new mongoose.Types.ObjectId(),
     Userid: req.body.UserId,
@@ -54,16 +49,15 @@ router.post('/', (req, res, next) => {
     Skills: req.body.Skills,
     GigType: req.body.GigType,
     RequiredProficiency: req.body.RequiredProficiency,
-    Description: req.body.Description
+    Description: req.body.Description,
   });
 
   gig.save().then;
 
   res.status(200).json({
-    message: 'Handling GET request on /',
-    createdGig: gig
-  })
-
+    message: "Handling GET request on /",
+    createdGig: gig,
+  });
 });
 
 // Updating a Gig with a given id
@@ -71,7 +65,7 @@ router.patch("/:id", async (request, response) => {
   try {
     await Gig.findByIdAndUpdate(request.params.id, request.body);
     // await Gig.save();
-    response.send("updated Gig"+ request.params.id);
+    response.send("updated Gig" + request.params.id);
   } catch (error) {
     console.log(error);
     response.status(500).send(error);
