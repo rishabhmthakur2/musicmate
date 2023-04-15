@@ -10,6 +10,8 @@ let gigsRouter = require("./routes/gigs");
 let mediaItemsRouter = require("./routes/mediaItems");
 let postsRouter = require("./routes/posts");
 let usersRouter = require("./routes/users");
+let messagesRouter = require("./routes/messages");
+let searchRouter = require("./routes/search");
 
 let app = express();
 
@@ -30,6 +32,8 @@ app.use("/users", usersRouter);
 app.use("/gigs", gigsRouter);
 app.use("/mediaItems", mediaItemsRouter);
 app.use("/posts", postsRouter);
+app.use("/messages", messagesRouter);
+app.use("/search", searchRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

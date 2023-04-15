@@ -1,48 +1,83 @@
-var express = require('express');
-var router = express.Router();
-const mongoose = require('mongoose');
+let express = require("express");
+let router = express.Router();
+const mongoose = require("mongoose");
 
-
-const User = require('../models/user');
+const User = require("../models/user");
 
 // Get details of one user based on FirstName
 router.get("/:id", async (request, response) => {
-  var tempid = request.params.id
+  let tempid = request.params.id;
 
-  if(tempid.length != 24){
-    response.status(400).send("Please send a valid id of 24 characters")
-  }else{
-
-    try{
-      const output = await User.find({_id: request.params.id});
+  if (tempid.length != 24) {
+    response.status(400).send("Please send a valid id of 24 characters");
+  } else {
+    try {
+      const output = await User.find({ _id: request.params.id });
       try {
         response.status(200).send(output);
       } catch (error) {
         response.status(500).send(error);
       }
-    }catch(error){
+    } catch (error) {
       response.status(500).send(error);
     }
   }
-  
-  
+});
+
+router.get("/:username/:password", async (request, response) => {
+  let username = request.params.username;
+  let password = request.params.password;
+
+  // Find the user with the matching username and password
+  const user = await User.findOne({ username, password });
+
+  // If no user is found, return false
+  if (!user) {
+    return response.json({ success: false });
+  }
+
+  // If a user is found, return true
+  response.json({ success: true });
+});
+
+router.get("/:id/bookmarks", async (request, response) => {
+  let tempid = request.params.id;
+
+  if (tempid.length != 24) {
+    response.status(400).send("Please send a valid id of 24 characters");
+  } else {
+    try {
+      const output = await User.find({ _id: request.params.id }).select({
+        BookmarkedProfiles: 1,
+        BookmarkedGigs: 1,
+        BookmarkedMediaItems: 1,
+      });
+      try {
+        response.status(200).send(output);
+      } catch (error) {
+        response.status(500).send(error);
+      }
+    } catch (error) {
+      response.status(500).send(error);
+    }
+  }
 });
 
 // GET listing for all users.
-router.get('/', function(req, res) {
-  User.find({}, function(err, users) {
-    var userMap = {};
+router.get("/", function (req, res) {
+  User.find({}, function (err, users) {
+    let userMap = {};
 
-    users.forEach(function(user) {
+    users.forEach(function (user) {
       userMap[user._id] = user;
     });
 
-    res.send(userMap);  
+    res.send(userMap);
   });
 });
 
 // Create a new user
-router.post('/', (req, res, next) => {
+router.post("/", (req, res, next) => {
   const user = new User({
     _id: new mongoose.Types.ObjectId(),
     FirstName: req.body.FirstName,
@@ -60,24 +95,21 @@ router.post('/', (req, res, next) => {
     Description: req.body.Description,
     Heading: req.body.Heading,
     BookmarkedProfiles: req.body.BookmarkedProfiles,
-
   });
 
   user.save().then;
 
   res.status(200).json({
-    message: 'Handling GET request on /',
-    createdUser: user
-  })
-
+    message: "Handling GET request on /",
+    createdUser: user,
+  });
 });
 
 // Updating a user with a given id
 router.patch("/:id", async (request, response) => {
   try {
     await User.findByIdAndUpdate(request.params.id, request.body);
-    // await User.save();
-    response.send("updated user"+ request.params.id);
+    response.send("updated user" + request.params.id);
   } catch (error) {
     console.log(error);
     response.status(500).send(error);

@@ -16,7 +16,7 @@ npm install
 2. Get the local env properties from someone in the team, and update the values in `local.env`
 3. Run this code to start the server:
 ```
-node ./bin/www
+node bin/www
 ```
 
 ### Future prospect 

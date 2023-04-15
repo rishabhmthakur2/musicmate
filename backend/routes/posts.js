@@ -4,51 +4,60 @@ const mongoose = require('mongoose');
 
 
 const Post = require('../models/post');
+const MediaItems = require("../models/mediaItem");
 
 // Get details of one post based on FirstName
 router.get("/:id", async (request, response) => {
   var tempid = request.params.id
 
-  if(tempid.length != 24){
+  if (tempid.length != 24) {
     response.status(400).send("Please send a valid id of 24 characters")
-  }else{
+  } else {
 
-    try{
-      const output = await Post.find({_id: request.params.id});
+    try {
+      const output = await Post.find({ _id: request.params.id });
       try {
         response.status(200).send(output);
       } catch (error) {
         response.status(500).send(error);
       }
-    }catch(error){
+    } catch (error) {
       response.status(500).send(error);
     }
   }
-  
-  
+
+
 });
 
 // GET listing for all posts.
-router.get('/', function(req, res) {
-  Post.find({}, function(err, posts) {
+router.get('/', function (req, res) {
+  Post.find({}, function (err, posts) {
     var postMap = {};
 
-    posts.forEach(function(post) {
+    posts.forEach(function (post) {
       postMap[post._id] = post;
     });
 
-    res.send(postMap);  
+    res.send(postMap);
   });
 });
 
 // Create a new post
 router.post('/', (req, res, next) => {
+  const mediaItems = new MediaItems({
+    _id: new mongoose.Types.ObjectId(),
+    UserId: req.body.mediaId.UserId,
+    URL: req.body.mediaId.URL,
+    ShowOnProfile: req.body.mediaId.ShowOnProfile,
+  });
+
+  mediaItems.save().then;
+
   const post = new Post({
     _id: new mongoose.Types.ObjectId(),
     Userid: req.body.Userid,
     Text: req.body.Text,
-    mediaId: req.body.mediaId,
-    Timestamp: req.body.Timestamp,
+    mediaId: mediaItems._id,
     Keywords: req.body.Keywords,
     Skills: req.body.Skills
   });
@@ -56,7 +65,7 @@ router.post('/', (req, res, next) => {
   post.save().then;
 
   res.status(200).json({
-    message: 'Handling GET request on /',
+    message: 'Handling POST request on /',
     createdPost: post
   })
 
@@ -67,7 +76,7 @@ router.patch("/:id", async (request, response) => {
   try {
     await Post.findByIdAndUpdate(request.params.id, request.body);
     // await Post.save();
-    response.send("updated post"+ request.params.id);
+    response.send("updated post" + request.params.id);
   } catch (error) {
     console.log(error);
     response.status(500).send(error);
