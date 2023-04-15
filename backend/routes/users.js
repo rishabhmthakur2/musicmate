@@ -24,6 +24,29 @@ router.get("/:id", async (request, response) => {
   }
 });
 
+router.get("/:id/bookmarks", async (request, response) => {
+  let tempid = request.params.id;
+
+  if (tempid.length != 24) {
+    response.status(400).send("Please send a valid id of 24 characters");
+  } else {
+    try {
+      const output = await User.find({ _id: request.params.id }).select({
+        BookmarkedProfiles: 1,
+        BookmarkedGigs: 1,
+        BookmarkedMediaItems: 1,
+      });
+      try {
+        response.status(200).send(output);
+      } catch (error) {
+        response.status(500).send(error);
+      }
+    } catch (error) {
+      response.status(500).send(error);
+    }
+  }
+});
+
 // GET listing for all users.
 router.get("/", function (req, res) {
   User.find({}, function (err, users) {
