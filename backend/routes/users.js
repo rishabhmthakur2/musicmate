@@ -24,6 +24,22 @@ router.get("/:id", async (request, response) => {
   }
 });
 
+router.get("/:username/:password", async (request, response) => {
+  let username = request.params.username;
+  let password = request.params.password;
+
+  // Find the user with the matching username and password
+  const user = await User.findOne({ username, password });
+
+  // If no user is found, return false
+  if (!user) {
+    return response.json({ success: false });
+  }
+
+  // If a user is found, return true
+  response.json({ success: true });
+});
+
 router.get("/:id/bookmarks", async (request, response) => {
   let tempid = request.params.id;
 
