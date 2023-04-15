@@ -4,7 +4,7 @@ const mediaItemSchema = mongoose.Schema({
     _id: mongoose.Types.ObjectId,
     Userid: String,
     URL: String,
-    ShowOnProfile: Boolean
+    ShowOnProfile: { type: Boolean, default: true }
 });
 
 module.exports = mongoose.model('MediaItem', mediaItemSchema)
