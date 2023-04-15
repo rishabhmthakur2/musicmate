@@ -1,12 +1,12 @@
-var express = require("express");
-var router = express.Router();
+let express = require("express");
+let router = express.Router();
 const mongoose = require("mongoose");
 
 const User = require("../models/user");
 
 // Get details of one user based on FirstName
 router.get("/:id", async (request, response) => {
-  var tempid = request.params.id;
+  let tempid = request.params.id;
 
   if (tempid.length != 24) {
     response.status(400).send("Please send a valid id of 24 characters");
@@ -27,7 +27,7 @@ router.get("/:id", async (request, response) => {
 // GET listing for all users.
 router.get("/", function (req, res) {
   User.find({}, function (err, users) {
-    var userMap = {};
+    let userMap = {};
 
     users.forEach(function (user) {
       userMap[user._id] = user;
@@ -70,7 +70,6 @@ router.post("/", (req, res, next) => {
 router.patch("/:id", async (request, response) => {
   try {
     await User.findByIdAndUpdate(request.params.id, request.body);
-    // await User.save();
     response.send("updated user" + request.params.id);
   } catch (error) {
     console.log(error);
