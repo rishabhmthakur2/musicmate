@@ -1,27 +1,25 @@
-
-
 .mt-40 {
-    margin-top: 40px;
+  margin-top: 40px;
 }
 
 .auth-label {
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 22px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
 }
 
 .auth-input-wrap {
-    border-radius: 0px;
-    border: 1px solid var(--border-gray);
+  border-radius: 0px;
+  border: 1px solid var(--border-gray);
 }
 
 .tnc-text {
-    font-weight: 300;
-    font-size: 14px;
-    line-height: 17px;
-    color: var(--secondary-color);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--secondary-color);
 
-    span {
-        color: var(--primary-btn-color);
-    }
+  span {
+    color: var(--primary-btn-color);
+  }
 }

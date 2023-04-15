@@ -1,51 +1,51 @@
 @import "assets/styles/color.scss";
 
-.primary-btn{
-    width: 320px;
-    font-weight: 700;
-font-size: 18px;
-line-height: 22px;
-color: var(--white-color);
-background: var(--primary-btn-color);
-padding: 11px;
+.primary-btn {
+  width: 320px;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+  color: var(--white-color);
+  background: var(--primary-btn-color);
+  padding: 11px;
 }
-.secondary-btn{
-    width: 320px;
-    font-weight: 700;
-font-size: 18px;
-line-height: 22px;
-background: var(--white-color);
-color: var(--primary-btn-color);
-padding: 11px;
+.secondary-btn {
+  width: 320px;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+  background: var(--white-color);
+  color: var(--primary-btn-color);
+  padding: 11px;
 }
-.main-title{
-    font-weight: 700;
-    font-size: 36px;
-    line-height: 44px;
-    text-align: center;
-    color: var(--primary-color);
+.main-title {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 44px;
+  text-align: center;
+  color: var(--primary-color);
 }
-.desc-text{
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 22px;
-    color: var(--primary-color);
+.desc-text {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  color: var(--primary-color);
 }
 .auth-title {
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 29px;
-    color: var(--primary-color);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 29px;
+  color: var(--primary-color);
 }
 .auth-main-wrap {
-    padding: 75px 35px;
+  padding: 75px 35px;
 }
-.mt-80{
-    margin-top: 80px;
+.mt-80 {
+  margin-top: 80px;
 }
-.mt-50{
-    margin-top: 50px;
+.mt-50 {
+  margin-top: 50px;
 }
-.mt-75{
-    margin-top: 75px;
+.mt-75 {
+  margin-top: 75px;
 }
