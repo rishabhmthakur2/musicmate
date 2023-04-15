@@ -28,6 +28,24 @@ router.get("/:id", async (request, response) => {
 
 });
 
+// Get all messages between one user and another
+router.get("/:sender_id/:receiver_id", async (request, response) => {
+
+  try {
+    const output = await Message.find({ sender_id: request.params.sender_id, receiver_id: request.params.receiver_id })
+    try {
+      response.status(200).send(output);
+    } catch (error) {
+      response.status(500).send(error);
+    }
+  } catch (error) {
+    response.status(500).send(error);
+  }
+
+
+
+});
+
 // get all the users this person is chatting with
 router.get("/chatlist/:id", async (request, response) => {
   var tempid = request.params.id
