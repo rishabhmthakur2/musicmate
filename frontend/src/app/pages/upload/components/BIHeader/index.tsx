@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { ReactComponent as Close } from "../../../../../assets/images/close.svg";
-import "../../biinfo.scss";
+import "../../upload.scss";
 import { ReactComponent as Logo } from "../../../../../assets/images/logo.svg";
 
 const BIHeader = () => {

@@ -6,7 +6,7 @@ import './Home.scss'
 const Home = (props) => {
     const navigate = useNavigate()
     return (
-        <Container fluid>
+        <Container fluid style={{marginTop: "100px"}}>
             <Row>
                 <Col xs="12" className='d-flex justify-content-center mt-5 pt-5'>
                     <MainImg />

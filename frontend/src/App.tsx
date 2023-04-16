@@ -5,6 +5,7 @@ import Home from "app/pages/Home";
 import Welcome from "app/pages/welcome";
 import { Routes, Route } from "react-router-dom";
 import "./App.scss";
+import Upload from "app/pages/upload";
 
 function App() {
   return (
@@ -23,6 +24,9 @@ function App() {
           {" "}
         </Route>
         <Route path="/basicinfo" element={<BasicInformation />}>
+          {" "}
+        </Route>
+        <Route path="/upload" element={<Upload />}>
           {" "}
         </Route>
       </Routes>

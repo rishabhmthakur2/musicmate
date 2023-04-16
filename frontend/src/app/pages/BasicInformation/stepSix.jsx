@@ -1,20 +1,20 @@
 import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as WelcomeImg } from "../../../assets/images/welcome.svg";
+import { ReactComponent as UploadImg } from "../../../assets/images/upload.svg";
 
-const Welcome = (props) => {
+const StepSix = ({ handleNext }) => {
   const navigate = useNavigate();
   return (
     <Container fluid style={{marginTop: "100px"}}>
       <Row>
         <Col xs="12" className="d-flex justify-content-center mt-5 pt-5">
-          <WelcomeImg />
+          <UploadImg />
         </Col>
         <Col xs="12">
-          <p className="main-title mt-5">Welcome!</p>
+          <p className="main-title mt-5">Almost Done!</p>
           <p className="desc-text text-center">
-            Let’s kickstart your journey by filling in some basic information
+            Showcase your work on MusicMate to get discovered!
           </p>
         </Col>
         <Col
@@ -24,7 +24,9 @@ const Welcome = (props) => {
           <Button
             className="primary-btn"
             style={{ marginTop: "38px" }}
-            onClick={() => navigate("/basicinfo")}
+            onClick={() => {
+              navigate("/upload");
+            }}
           >
             Continue
           </Button>
@@ -40,4 +42,4 @@ const Welcome = (props) => {
     </Container>
   );
 };
-export default Welcome;
+export default StepSix;

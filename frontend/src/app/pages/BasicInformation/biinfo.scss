@@ -6,11 +6,19 @@
 }
 .pill-wrap {
   padding: 10px 20px;
-  background-color: var(--light-blue) !important;
+  background-color: #CDE0FF !important;
   font-weight: 500;
   font-size: 18px;
   line-height: 22px;
-  color: var(--primary-color);
+  color: #373737;
+}
+.pill-wrap-selected {
+  padding: 10px 20px;
+  background-color: var(primary-btn-color) !important;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  color: #ffffff;
 }
 .addMoreBtn {
   background: var(--white-color);

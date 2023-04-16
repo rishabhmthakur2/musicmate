@@ -7,17 +7,36 @@ import "./biinfo.scss";
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as Purpose } from "../../../assets/images/purpose.svg";
 import { ReactComponent as Eye } from "../../../assets/images/eye.svg";
+import { ReactComponent as EyeSelected } from "../../../assets/images/eye-selected.svg";
 
 const StepOne = ({ handleNext }) => {
-  const [selectedOption, setSelectedOption] = useState("");
+  const [options, setOptions] = useState([]);
+  const [showOnProfile, setShowOnProfile] = useState(false);
+
   const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
+    const value = event.target.value;
+    if (event.target.checked) {
+      setOptions([...options, value]);
+    } else {
+      setOptions(options.filter((option) => option !== value));
+    }
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    selectedOption === "Yes" && handleNext();
+    if (options.length > 0) {
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      const purpose = {};
+      purpose["data"] = options;
+      purpose["isVisible"] = showOnProfile;
+      userData["purpose"] = purpose;
+      localStorage.setItem("userData", JSON.stringify(userData));
+      handleNext();
+    } else {
+      alert("Please select atleast one option");
+    }
   };
-  const navigate = useNavigate();
+
   return (
     <div className="auth-main-wrap" style={{ marginTop: "5%" }}>
       <Row>
@@ -40,8 +59,7 @@ const StepOne = ({ handleNext }) => {
         </Form.Group>
         <Form.Group className="mb-4">
           <Form.Label className="desc-text-sec">
-            To protect minors, MusicMate is only open to people aged 18 or
-            older. Please confirm your age in order to proceed.
+            We will tailor your journey here accordingly
           </Form.Label>
         </Form.Group>
 
@@ -52,9 +70,9 @@ const StepOne = ({ handleNext }) => {
             </Col>
             <Col xs="2">
               <Form.Check
-                value="Yes"
+                value="Explore gig opportunities"
                 type={"checkbox"}
-                checked={selectedOption === "Yes"}
+                checked={options.includes("Explore gig opportunities")}
                 onChange={handleOptionChange}
               />
             </Col>
@@ -65,9 +83,9 @@ const StepOne = ({ handleNext }) => {
             </Col>
             <Col xs="2">
               <Form.Check
-                value="No"
+                value="Find Jam Mates"
                 type={"checkbox"}
-                checked={selectedOption === "No"}
+                checked={options.includes("Find Jam Mates")}
                 onChange={handleOptionChange}
               />
             </Col>
@@ -78,9 +96,9 @@ const StepOne = ({ handleNext }) => {
             </Col>
             <Col xs="2">
               <Form.Check
-                value="No"
+                value="Showcase Works"
                 type={"checkbox"}
-                checked={selectedOption === "No"}
+                checked={options.includes("Showcase Works")}
                 onChange={handleOptionChange}
               />
             </Col>
@@ -91,9 +109,9 @@ const StepOne = ({ handleNext }) => {
             </Col>
             <Col xs="2">
               <Form.Check
-                value="No"
+                value="Expand Network"
                 type={"checkbox"}
-                checked={selectedOption === "No"}
+                checked={options.includes("Expand Network")}
                 onChange={handleOptionChange}
               />
             </Col>
@@ -106,20 +124,20 @@ const StepOne = ({ handleNext }) => {
             <p className="desc-text pe-2">Visible on profile</p>
             <div
               onClick={() => {
-                console.log("Clicked");
+                setShowOnProfile(!showOnProfile);
               }}
             >
-              <Eye />
+              {!showOnProfile ? <Eye /> : <EyeSelected />}
             </div>
           </Col>
           <Row className="mt-40">
             <Col xs="6">
-              <Button className="secondary-btn w-auto">
+              {/* <Button className="secondary-btn w-auto">
                 <ArrowLeft /> Prev
-              </Button>
+              </Button> */}
             </Col>
             <Col xs="6" className="d-flex justify-content-end">
-              <Button className="primary-btn w-auto">
+              <Button className="primary-btn w-auto" onClick={handleSubmit}>
                 Next <ArrowRight />
               </Button>
             </Col>
