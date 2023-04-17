@@ -8,43 +8,92 @@ import { ReactComponent as Eye } from "../../../assets/images/eye.svg";
 import { ReactComponent as EyeSelected } from "../../../assets/images/eye-selected.svg";
 import { ReactComponent as Thumbnail } from "../../../assets/images/thumbnail.svg";
 import AWS from "aws-sdk";
+import AutocompleteDropdown from "app/components/AutocompleteDropdown";
+import Loader from "app/components/Loader";
 
 const Upload = () => {
+  const navigate = useNavigate();
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState("");
   const [showOnProfile, setShowOnProfile] = useState(false);
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [description, setDescription] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [options, setOptions] = useState([
+    "Bossa Nova",
+    "Classical",
+    "Country",
+    "Electronic",
+    "Hip-hop",
+    "Jazz",
+    "Pop",
+    "R&B",
+    "Rock",
+    "Soundtrack",
+    "Alternatives",
+  ]);
   const handleSubmit = (event) => {
     event.preventDefault();
   };
   const inputRef = useRef(null);
 
   const handleUpload = () => {
-    const s3 = new AWS.S3({
-      accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-    });
-    console.log({ s3 });
-    const fileKey = `${Date.now()}-${fileName}`;
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      // Upload to Backend API here
+      // AWS integration already completed. Need to push the data to backend API when the user clicks Finish.
 
-    // Upload the file to S3
-    s3.upload(
-      {
-        Bucket: process.env.REACT_APP_AWS_BUCKET_NAME,
-        Key: fileKey,
-        Body: file,
-      },
-      (error, data) => {
-        if (error) {
-          console.error(error);
-        } else {
-          console.log(`File uploaded to: ${data.Location}`);
-        }
-      }
-    );
+      // const credentials = {
+      //   accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+      //   secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+      // };
+      // AWS.config.update(credentials);
+      // AWS.config.region = "us-west-1";
+      // const bucket = new AWS.S3({
+      //   params: { Bucket: process.env.REACT_APP_AWS_BUCKET_NAME },
+      // });
+      // const fileKey = `${Date.now()}-${fileName}`;
+      // // Upload the file to S3
+      // bucket.upload(
+      //   {
+      //     Key: fileKey,
+      //     Body: file,
+      //   },
+      //   (error, data) => {
+      //     if (error) {
+      //       console.error(error);
+      //     } else {
+      //       const fileData = {
+      //         data: {
+      //           name: fileName,
+      //           url: data.Location,
+      //           genres: [...selectedGenres],
+      //           description: description,
+      //         },
+      //         isVisible: showOnProfile,
+      //       };
+      //       const userData = JSON.parse(localStorage.getItem("userData")) || {};
+      //       console.log({ userData });
+      //       if (userData?.files) {
+      //         userData["files"] = [...userData["files"], fileData];
+      //       } else {
+      //         userData["files"] = [fileData];
+      //       }
+      //       localStorage.setItem("userData", JSON.stringify(userData));
+      //     }
+      //   }
+      // );
+      navigate("/upload/success");
+    }, 2000);
   };
 
   const handleClick = () => {
     inputRef.current.click();
+  };
+
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value);
   };
 
   useEffect(() => {
@@ -61,6 +110,8 @@ const Upload = () => {
   };
   return (
     <div className="auth-main-wrap" style={{ marginTop: "5%" }}>
+      {isLoading && <Loader />}
+
       <Row>
         <Col xs="12">
           <BIHeader />
@@ -91,29 +142,30 @@ const Upload = () => {
             <Form.Control
               className=" p-2 auth-input-wrap"
               type="text"
+              value={fileName}
               placeholder=""
             />
           </Form.Group>
-          <Form.Group className="mb-4">
-            <Form.Label className="desc-text">Genre(s)</Form.Label>
-            <Form.Control
-              className=" p-2 auth-input-wrap"
-              type="text"
-              placeholder=""
-            />
-          </Form.Group>
+          <AutocompleteDropdown
+            options={options}
+            selectedGenres={selectedGenres}
+            setSelectedGenres={setSelectedGenres}
+          />
           <Form.Group className="mb-4">
             <Form.Label className="desc-text">Description</Form.Label>
             <Form.Control
               className="p-2 auth-input-wrap"
-              as="textarea" rows={3}
+              as="textarea"
+              rows={2}
+              value={description}
+              onChange={handleDescriptionChange}
             />
           </Form.Group>
           <Row className="mt-40">
             <Col
               xs="12"
               className="d-flex align-items-center"
-              style={{ marginTop: "20px" }}
+              style={{ marginTop: "10px" }}
             >
               <p className="desc-text pe-2">Visible on profile</p>
               <div
@@ -126,11 +178,11 @@ const Upload = () => {
             </Col>
             <Col
               xs="12"
-              className="d-flex flex-column align-items-center justify-content-center mt-2 "
+              className="d-flex flex-column align-items-center justify-content-center"
             >
               <Button
                 className="primary-btn"
-                style={{ marginTop: "38px" }}
+                style={{ marginTop: "28px" }}
                 onClick={handleUpload}
               >
                 Finish
@@ -138,7 +190,7 @@ const Upload = () => {
               <Button
                 className="secondary-btn"
                 style={{ marginTop: "16px" }}
-                onClick={handleUpload}
+                onClick={() => navigate("/")}
               >
                 Cancel
               </Button>

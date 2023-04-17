@@ -1,0 +1,26 @@
+.TopNavBar {
+  position: absolute;
+  top: 112px;
+  display: grid;
+  grid-template-columns: 50px 1fr 50px;
+  grid-template-areas: "logo search profile";
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 66px;
+}
+
+.logo {
+  grid-area: logo;
+  margin-left: 10px;
+  margin-right: 18px;
+}
+
+
+.profile-icon {
+  grid-area: profile;
+  margin-left: 14px !important;
+  margin-right: 10px;
+}

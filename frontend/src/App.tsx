@@ -6,6 +6,7 @@ import Welcome from "app/pages/welcome";
 import { Routes, Route } from "react-router-dom";
 import "./App.scss";
 import Upload from "app/pages/upload";
+import UploadSucess from "app/pages/upload/components/success";
 
 function App() {
   return (
@@ -27,6 +28,9 @@ function App() {
           {" "}
         </Route>
         <Route path="/upload" element={<Upload />}>
+          {" "}
+        </Route>
+        <Route path="/upload/success" element={<UploadSucess />}>
           {" "}
         </Route>
       </Routes>

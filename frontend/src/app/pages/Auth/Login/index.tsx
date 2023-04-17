@@ -1,39 +1,102 @@
-import React from 'react'
-import Form from 'react-bootstrap/Form';
-import { Button } from 'react-bootstrap'
+import React, { useState } from "react";
+import { Button } from "react-bootstrap";
+import { Container, Row, Form, Col } from "react-bootstrap";
 
-import AuthHeader from '../Components/AuthHeader';
-import '../auth.scss'
-import { useNavigate } from 'react-router-dom';
+import AuthHeader from "../Components/AuthHeader";
+import "../auth.scss";
+import { useNavigate } from "react-router-dom";
+import TopNavBar from "app/components/TopBar";
 
-const Login = (props) => {
-    const navigate = useNavigate()
-    return (
-        <div className='auth-main-wrap'>
-            <AuthHeader title={' Join MusicMate'} />
-            <Form className='mt-40'>
-                <Form.Group className="mb-4">
-                    <Form.Label className='auth-label'>Email</Form.Label>
-                    <Form.Control className=' p-2 auth-input-wrap'  type="email" placeholder="Enter email" />  
-                </Form.Group>
+const StepTwo = ({}) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberPassword, setRememberPassword] = useState(false);
 
-                <Form.Group className="mb-3" >
-                    <Form.Label className='auth-label'>Password</Form.Label>
-                    <Form.Control  className=' p-2 auth-input-wrap' type="password" placeholder="Password" />
-                    <Form.Text className="text-muted">
-                    8 or more characters
-        </Form.Text>
-                </Form.Group>
-                <div  className='d-flex flex-column align-items-center justify-content-center mt-40 '>
-                    
-                   
-                    <Button className='primary-btn' type="submit" onClick={()=>navigate('/welcome')}>
-                    Submit
-                </Button>
-                </div>
-                
-            </Form>
-        </div>
-    )
-}
-export default Login
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const userData = {};
+    userData["email"] = email;
+    userData["password"] = password;
+    localStorage.setItem("userData", JSON.stringify(userData));
+    if (password.length < 8) {
+      alert("Password should be atleast 8 characters");
+    } else if (!isEmailValid(email)) {
+      alert("Please enter a valid email address!");
+      return;
+    } else {
+      //   handleNext();
+    }
+  };
+  const isEmailValid = (email) => {
+    // Regex pattern for email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+  return (
+    <TopNavBar />
+    // <div className="auth-main-wrap" style={{ marginTop: "120px" }}>
+    //   <AuthHeader title={"Welcome Back!"} />
+    //   <Form className="mt-40">
+    //     <div className="d-flex flex-column justify-content-center mt-40 ">
+    //       <Form.Group className="mb-4">
+    //         <Form.Label className="auth-label">Email</Form.Label>
+    //         <Form.Control
+    //           className=" p-2 auth-input-wrap"
+    //           type="text"
+    //           placeholder=""
+    //           onChange={(event) => {
+    //             setEmail(event.target.value);
+    //           }}
+    //         />
+    //       </Form.Group>
+    //       <Form.Group>
+    //         <Form.Label className="auth-label">Password</Form.Label>
+    //         <Form.Control
+    //           className=" p-2 auth-input-wrap"
+    //           type="text"
+    //           placeholder="8 or more characters"
+    //           onChange={(event) => {
+    //             setPassword(event.target.value);
+    //           }}
+    //         />
+    //         <div
+    //           style={{
+    //             display: "flex",
+    //             marginTop: "30px",
+    //             alignItems: "center",
+    //           }}
+    //         >
+    //           <p className="desc-text" style={{ marginRight: "15px" }}>
+    //             Remember Me
+    //           </p>
+    //           <Form.Check
+    //             value="Full Name"
+    //             type="checkbox"
+    //             checked={rememberPassword}
+    //             onChange={() => {
+    //               setRememberPassword(!rememberPassword);
+    //             }}
+    //           />
+    //         </div>
+    //         <a href="/login">
+    //           <p
+    //             className="desc-text"
+    //             style={{ color: "#3A86FF", marginTop: "12px" }}
+    //           >
+    //             Forgot Password?
+    //           </p>
+    //         </a>
+    //       </Form.Group>
+    //       <Button
+    //         className="primary-btn"
+    //         style={{ marginTop: "40px" }}
+    //         type="submit"
+    //       >
+    //         Continue
+    //       </Button>
+    //     </div>
+    //   </Form>
+    // </div>
+  );
+};
+export default StepTwo;
