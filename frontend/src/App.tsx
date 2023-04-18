@@ -7,6 +7,9 @@ import { Routes, Route } from "react-router-dom";
 import "./App.scss";
 import Upload from "app/pages/upload";
 import UploadSucess from "app/pages/upload/components/success";
+import Landing from "app/pages/Landing";
+import MessageList from "app/pages/MessageList";
+import Chat from "app/pages/Chat";
 
 function App() {
   return (
@@ -31,6 +34,15 @@ function App() {
           {" "}
         </Route>
         <Route path="/upload/success" element={<UploadSucess />}>
+          {" "}
+        </Route>
+        <Route path="/landing" element={<Landing />}>
+          {" "}
+        </Route>
+        <Route path="/messages" element={<MessageList />}>
+          {" "}
+        </Route>
+        <Route path="/messages/view" element={<Chat />}>
           {" "}
         </Route>
       </Routes>

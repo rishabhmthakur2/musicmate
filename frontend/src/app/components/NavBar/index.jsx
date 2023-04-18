@@ -1,0 +1,56 @@
+import React from "react";
+// import "./navbar.scss";
+import { ReactComponent as Home } from "../../../assets/icons/home.svg";
+import { ReactComponent as Bookmark } from "../../../assets/icons/bookmarks.svg";
+import { ReactComponent as NewPost } from "../../../assets/icons/post.svg";
+import { ReactComponent as Gigs } from "../../../assets/icons/gigs.svg";
+import { ReactComponent as Profile } from "../../../assets/icons/profile.svg";
+import { Row, Container, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+
+function NavBar(props) {
+  const navigate = useNavigate();
+  return (
+    <Container
+      fluid
+      style={{
+        position: "fixed",
+        bottom: "0px",
+        width: "100vw",
+        overflowX: "hidden",
+      }}
+    >
+      <Row
+        style={{
+          backgroundColor: "#9CC2FF",
+          height: "72px",
+          display: "flex",
+          flexDirection: "row",
+          maxWidth: "100vw",
+          alignItems: "center",
+          alignContent: "center",
+          justifyContent: "space-evenly",
+          paddingLeft: "10px",
+        }}
+      >
+        <Col xs={2}>
+          <Home onClick={() => navigate("/landing")} />
+        </Col>
+        <Col xs={2}>
+          <Bookmark />
+        </Col>
+        <Col xs={2}>
+          <NewPost />
+        </Col>
+        <Col xs={2}>
+          <Gigs />
+        </Col>
+        <Col xs={2}>
+          <Profile />
+        </Col>
+      </Row>
+    </Container>
+  );
+}
+
+export default NavBar;

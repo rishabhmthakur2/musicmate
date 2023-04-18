@@ -6,7 +6,7 @@ const SearchBar = () => {
   return (
     <div className="search-bar">
       <FaSearch className="search-icon" />
-      <input type="text" placeholder="Search" />
+      <input type="text" placeholder="Gigs, People, Songs..." />
     </div>
   );
 };
