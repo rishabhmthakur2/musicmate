@@ -4,7 +4,23 @@ const mongoose = require("mongoose");
 
 const Gig = require("../models/gig");
 
-// Get details of one Gig based on FirstName
+/**
+ * @swagger
+ * /gigs/{id}:
+ *  get:
+ *    tags:
+ *      - gigs
+ *    description: Get information about a single gig
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      '200':
+ *        description: details about a single gig by ID
+ */
 router.get("/:id", async (request, response) => {
   var tempid = request.params.id;
   if (tempid.length != 24) {
@@ -23,7 +39,17 @@ router.get("/:id", async (request, response) => {
   }
 });
 
-// GET listing for all Gigs.
+/**
+ * @swagger
+ * /gigs:
+ *  get:
+ *    tags:
+ *      - gigs
+ *    description: Get all gigs
+ *    responses:
+ *      '200':
+ *        description: a list of gigs
+ */
 router.get("/", function (req, res) {
   Gig.find({}, function (err, gigs) {
     var gigMap = {};
@@ -36,7 +62,17 @@ router.get("/", function (req, res) {
   });
 });
 
-// Create a new Gig
+/**
+ * @swagger
+ * /gigs:
+ *  post:
+ *    tags:
+ *      - gigs
+ *    description: Create a new gig
+ *    responses:
+ *      '200':
+ *        description: successful creation of a new gig
+ */
 router.post("/", (req, res, next) => {
   const gig = new Gig({
     _id: new mongoose.Types.ObjectId(),
@@ -60,7 +96,23 @@ router.post("/", (req, res, next) => {
   });
 });
 
-// Updating a Gig with a given id
+/**
+ * @swagger
+ * /gigs/{id}:
+ *  patch:
+ *    tags:
+ *      - gigs
+ *    description: Update an existing gig
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      '200':
+ *        description: Update success with a success message
+ */
 router.patch("/:id", async (request, response) => {
   try {
     await Gig.findByIdAndUpdate(request.params.id, request.body);
