@@ -6,6 +6,17 @@ const User = require("../models/user");
 const Gig = require("../models/gig");
 const MediaItem = require("../models/mediaItem");
 
+/**
+ * @swagger
+ * /search:
+ *  post:
+ *    tags:
+ *      - search
+ *    description: search for content
+ *    responses:
+ *      '200':
+ *        description: a list of items relevant to the search
+ */
 router.post("/", (req, res, next) => {
   const searchType = req.body.searchType; // allowed types: "gigs", "users", "mediaItems"
   const searchFilter = req.body.searchFilter;

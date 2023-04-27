@@ -4,7 +4,23 @@ const mongoose = require("mongoose");
 
 const MediaItems = require("../models/mediaItem");
 
-// Get details of one mediaItems based on FirstName
+/**
+ * @swagger
+ * /mediaItems/{id}:
+ *  get:
+ *    tags:
+ *      - mediaItems
+ *    description: Get information about a single media Item
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      '200':
+ *        description: details about a single media item
+ */
 router.get("/:id", async (request, response) => {
   var tempid = request.params.id;
 
@@ -24,7 +40,17 @@ router.get("/:id", async (request, response) => {
   }
 });
 
-// GET listing for all mediaItemss.
+/**
+ * @swagger
+ * /mediaItems:
+ *  get:
+ *    tags:
+ *      - mediaItems
+ *    description: Get all media items
+ *    responses:
+ *      '200':
+ *        description: list of all media items
+ */
 router.get("/", function (req, res) {
   MediaItems.find({}, function (err, mediaItemss) {
     var mediaItemsMap = {};
@@ -37,7 +63,17 @@ router.get("/", function (req, res) {
   });
 });
 
-// Create a new mediaItems
+/**
+ * @swagger
+ * /mediaItems:
+ *  post:
+ *    tags:
+ *      - mediaItems
+ *    description: Create a new media item
+ *    responses:
+ *      '200':
+ *        description: Creates a new document for the media item
+ */
 router.post("/", (req, res, next) => {
   const mediaItems = new MediaItems({
     _id: new mongoose.Types.ObjectId(),
@@ -54,7 +90,23 @@ router.post("/", (req, res, next) => {
   });
 });
 
-// Updating a mediaItems with a given id
+/**
+ * @swagger
+ * /mediaItems/{id}:
+ *  patch:
+ *    tags:
+ *      - mediaItems
+ *    description: Update information about a single media Item
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      '200':
+ *        description: Update details about a single media item
+ */
 router.patch("/:id", async (request, response) => {
   try {
     await MediaItems.findByIdAndUpdate(request.params.id, request.body);

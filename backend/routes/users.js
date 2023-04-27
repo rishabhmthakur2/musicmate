@@ -4,7 +4,23 @@ const mongoose = require("mongoose");
 
 const User = require("../models/user");
 
-// Get details of one user based on FirstName
+/**
+ * @swagger
+ * /users/{id}:
+ *  get:
+ *    tags:
+ *      - users
+ *    description: Get information about a single user
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      '200':
+ *        description: details about a single user
+ */
 router.get("/:id", async (request, response) => {
   let tempid = request.params.id;
 
@@ -24,6 +40,28 @@ router.get("/:id", async (request, response) => {
   }
 });
 
+/**
+ * @swagger
+ * /users/{username}/{password}:
+ *  get:
+ *    tags:
+ *      - users
+ *    description: Get information about a single user
+ *    parameters:
+ *      - name: username
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *      - name: password
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      '200':
+ *        description: success message about the login
+ */
 router.get("/:username/:password", async (request, response) => {
   let username = request.params.username;
   let password = request.params.password;
@@ -40,6 +78,23 @@ router.get("/:username/:password", async (request, response) => {
   response.json({ success: true });
 });
 
+/**
+ * @swagger
+ * /users/{id}/bookmarks:
+ *  get:
+ *    tags:
+ *      - users
+ *    description: Get all bookmarks for a user
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      '200':
+ *        description: a list of bookmarks
+ */
 router.get("/:id/bookmarks", async (request, response) => {
   let tempid = request.params.id;
 
@@ -63,7 +118,17 @@ router.get("/:id/bookmarks", async (request, response) => {
   }
 });
 
-// GET listing for all users.
+/**
+ * @swagger
+ * /users:
+ *  get:
+ *    tags:
+ *      - users
+ *    description: get all users
+ *    responses:
+ *      '200':
+ *        description: a list of users
+ */
 router.get("/", function (req, res) {
   User.find({}, function (err, users) {
     let userMap = {};
@@ -76,7 +141,17 @@ router.get("/", function (req, res) {
   });
 });
 
-// Create a new user
+/**
+ * @swagger
+ * /users:
+ *  post:
+ *    tags:
+ *      - users
+ *    description: register a new user
+ *    responses:
+ *      '200':
+ *        description: success message for registering a new user
+ */
 router.post("/", (req, res, next) => {
   const user = new User({
     _id: new mongoose.Types.ObjectId(),
@@ -105,7 +180,23 @@ router.post("/", (req, res, next) => {
   });
 });
 
-// Updating a user with a given id
+/**
+ * @swagger
+ * /users/{id}:
+ *  patch:
+ *    tags:
+ *      - users
+ *    description: update information about a single user
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      '200':
+ *        description: success message about the updated user
+ */
 router.patch("/:id", async (request, response) => {
   try {
     await User.findByIdAndUpdate(request.params.id, request.body);
