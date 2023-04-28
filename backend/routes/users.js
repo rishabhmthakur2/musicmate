@@ -3,6 +3,8 @@ let router = express.Router();
 const mongoose = require("mongoose");
 
 const User = require("../models/user");
+const Post = require("../models/post");
+const Gig = require("../models/gig");
 
 /**
  * @swagger
@@ -98,6 +100,59 @@ router.get("/:id/bookmarks", async (request, response) => {
       });
       try {
         response.status(200).send(output);
+      } catch (error) {
+        response.status(500).send(error);
+      }
+    } catch (error) {
+      response.status(500).send(error);
+    }
+  }
+});
+
+// Pulling the feed by combining gigs and posts based on the city the user is in.
+router.get("/:id/feed", async (request, response) => {
+  let tempid = request.params.id;
+  console.log("We are in here now!");
+  console.log(tempid);
+  if (tempid.length != 24) {
+    response.status(400).send("Please send a valid id of 24 characters");
+  } else {
+    try {
+      const output = await User.find({ _id: request.params.id });
+      const city = output[0]["Location"]["city"];
+      const usersInSameCity = await User.find({ "Location.city": city }, "_id");
+      const userIds = usersInSameCity.map((user) => user._id.toString());
+      const posts = await Post.find({ Userid: { $in: userIds } });
+      const gigs = await Gig.find({ Userid: { $in: userIds } });
+
+      const formattedPosts = posts.map((post) => {
+        return {
+          type: "post",
+          data: post,
+          timestamp: post.Timestamp,
+        };
+      });
+
+      console.log(formattedPosts);
+
+      const formattedGigs = gigs.map((gig) => {
+        return {
+          type: "gig",
+          data: gig,
+          timestamp: gig.Timestamp,
+        };
+      });
+
+      const combinedPosts = formattedPosts
+        .concat(formattedGigs)
+        .sort((a, b) => {
+          const timestampA = new Date(a.timestamp);
+          const timestampB = new Date(b.timestamp);
+          return timestampB - timestampA;
+        });
+
+      try {
+        response.status(200).json(combinedPosts);
       } catch (error) {
         response.status(500).send(error);
       }

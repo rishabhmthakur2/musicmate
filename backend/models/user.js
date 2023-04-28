@@ -9,6 +9,7 @@ const userSchema = mongoose.Schema({
   Location: {
     lat: Number,
     long: Number,
+    city: String,
   },
   LocationFlag: {
     type: Boolean,
