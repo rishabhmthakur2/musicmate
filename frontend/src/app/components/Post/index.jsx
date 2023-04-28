@@ -13,8 +13,8 @@ function Post(props) {
       style={{
         marginBottom: "0",
         padding: "0",
-        borderBottom: "2px solid #CDE0FF",
-        borderTop: "2px solid #CDE0FF",
+        borderBottom: "4px solid #CDE0FF",
+        // borderTop: "2px solid #CDE0FF",
       }}
     >
       <div className="post-details" style={{ marginLeft: "20px" }}>
