@@ -42,22 +42,11 @@ router.get("/:id", async (request, response) => {
 
 /**
  * @swagger
- * /users/{username}/{password}:
- *  get:
+ * /users/login:
+ *  post:
  *    tags:
  *      - users
- *    description: Get information about a single user
- *    parameters:
- *      - name: username
- *        in: path
- *        required: true
- *        schema:
- *          type: string
- *      - name: password
- *        in: path
- *        required: true
- *        schema:
- *          type: string
+ *    description: Pass username and password in the req body to login
  *    responses:
  *      '200':
  *        description: success message about the login
