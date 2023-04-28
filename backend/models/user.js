@@ -10,20 +10,36 @@ const userSchema = mongoose.Schema({
     lat: Number,
     long: Number,
   },
+  LocationFlag: {
+    type: Boolean,
+    default: false,
+  },
   OnboardingReason: {
     type: String,
     enum: ["a", "b", "c"],
     default: "a",
+  },
+  OnboardingFlag: {
+    type: Boolean,
+    default: false,
   },
   Keywords: {
     type: [String],
     enum: ["a", "b", "c"],
     default: "a",
   },
+  KeywordsFlag: {
+    type: Boolean,
+    default: false,
+  },
   Skills: {
     type: [String],
     enum: ["a", "b", "c"],
     default: "a",
+  },
+  SkillsFlag: {
+    type: Boolean,
+    default: false,
   },
   MusicalExpertise: {
     type: String,

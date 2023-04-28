@@ -62,20 +62,20 @@ router.get("/:id", async (request, response) => {
  *      '200':
  *        description: success message about the login
  */
-router.get("/:username/:password", async (request, response) => {
-  let username = request.params.username;
-  let password = request.params.password;
+router.post("/login", async (request, response) => {
+  let username = req.body.username;
+  let password = req.body.password;
 
   // Find the user with the matching username and password
   const user = await User.findOne({ username, password });
 
   // If no user is found, return false
   if (!user) {
-    return response.json({ success: false });
+    return response.json({ success: false, userid: -1 });
   }
 
   // If a user is found, return true
-  response.json({ success: true });
+  response.json({ success: true, userid: user._id });
 });
 
 /**
@@ -160,9 +160,13 @@ router.post("/", (req, res, next) => {
     Password: req.body.Password,
     EmailId: req.body.EmailId,
     Location: req.body.Location,
+    LocationFlag: req.body.LocationFlag,
     OnboardingReason: req.body.OnboardingReason,
+    OnboardingFlag: req.body.OnboardingFlag,
     Keywords: req.body.Keywords,
+    KeywordsFlag: req.body.KeywordsFlag,
     Skills: req.body.Skills,
+    SkillsFlag: req.body.SkillsFlag,
     MusicalExpertise: req.body.MusicalExpertise,
     NotificationPreference: req.body.notificationPreference,
     ProfileCreationDate: req.body.ProfileCreationDate,
