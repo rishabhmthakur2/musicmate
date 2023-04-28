@@ -1,15 +1,15 @@
 .TopNavBar {
   position: absolute;
-  // top: 112px;
-  display: grid;
-  grid-template-columns: 50px 1fr 50px;
-  grid-template-areas: "logo search profile";
-  align-items: center;
   padding: 10px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   // width: 100vw;
-  height: 66px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 4px solid #cde0ff;
 }
 
 .logo {
@@ -22,4 +22,73 @@
   grid-area: profile;
   margin-left: 14px !important;
   margin-right: 10px;
+}
+
+.filter-option {
+  grid-area: filters;
+}
+
+.row-1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+}
+
+// .search-bar {
+//   display: flex;
+//   align-items: center;
+//   background-color: #fff;
+//   border-radius: 5px;
+//   padding: 5px;
+//   margin: 0 10px;
+//   width: 100%;
+// }
+
+// .search-icon {
+//   margin-right: 5px;
+// }
+
+.icon-left,
+.icon-right {
+  flex: 1;
+  text-align: center;
+}
+
+.row-2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  width: 100vw;
+}
+
+.button {
+  flex: 1;
+  margin: 0 5px;
+  padding: 10px;
+  background-color: #cde0ff;
+  color: #373737;
+  text-align: center;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  border-radius: 40px;
+}
+
+.button-selected {
+  flex: 1;
+  margin: 0 5px;
+  padding: 10px;
+  background-color: #3a86ff;
+  color: #fff;
+  text-align: center;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  border-radius: 40px;
 }

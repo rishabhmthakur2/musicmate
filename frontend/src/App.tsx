@@ -10,6 +10,7 @@ import UploadSucess from "app/pages/upload/components/success";
 import Landing from "app/pages/Landing";
 import MessageList from "app/pages/MessageList";
 import Chat from "app/pages/Chat";
+import Search from "app/pages/Search";
 
 function App() {
   return (
@@ -43,6 +44,9 @@ function App() {
           {" "}
         </Route>
         <Route path="/messages/view" element={<Chat />}>
+          {" "}
+        </Route>
+        <Route path="/search" element={<Search />}>
           {" "}
         </Route>
       </Routes>
