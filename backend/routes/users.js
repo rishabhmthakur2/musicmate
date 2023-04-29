@@ -255,4 +255,31 @@ router.patch("/:id", async (request, response) => {
   }
 });
 
+/**
+ * @swagger
+ * /users/{id}:
+ *  delete:
+ *    tags:
+ *      - users
+ *    description: delete a user
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      '200':
+ *        description: success message about the deletion
+ */
+router.delete("/:id", async (request, response) => {
+  try {
+    await User.findByIdAndRemove(request.params.id);
+    response.send("Deleted user " + request.params.id);
+  } catch (error) {
+    console.log(error);
+    response.status(500).send(error);
+  }
+});
+
 module.exports = router;
