@@ -81,7 +81,7 @@ router.post("/", (req, res, next) => {
     Location: req.body.Location,
     Timestamp: req.body.Timestamp,
     EventLengthInMinutes: req.body.EventLengthInMinutes,
-    Keywords: req.body.Keywords,
+    Genres: req.body.Genres,
     Skills: req.body.Skills,
     GigType: req.body.GigType,
     RequiredProficiency: req.body.RequiredProficiency,

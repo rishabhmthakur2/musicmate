@@ -90,7 +90,7 @@ router.post("/", (req, res, next) => {
     Userid: req.body.Userid,
     Text: req.body.Text,
     mediaId: mediaItems._id,
-    Keywords: req.body.Keywords,
+    Genres: req.body.Genres,
     Skills: req.body.Skills,
   });
 

@@ -1,22 +1,19 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+let {
+  Skills,
+  Genres,
+  OnboardingReasons,
+  MusicalExpertise,
+} = require("./enums");
 
 const postSchema = mongoose.Schema({
-    _id: mongoose.Types.ObjectId,
-    Userid: String,
-    Text: String,
-    MediaId:{ type : String, default: "" }, // optional
-    Timestamp: { type : Date, default: Date.now },
-    Keywords: {
-        type: [String],
-        enum: ['a','b','c'],
-        default: 'a'
-    },
-    Skills: {
-        type: [String],
-        enum: ['a','b','c'],
-        default: 'a'
-    }
-    
+  _id: mongoose.Types.ObjectId,
+  Userid: String,
+  Text: String,
+  MediaId: { type: String, default: "" }, // optional
+  Timestamp: { type: Date, default: Date.now },
+  Genres: Genres,
+  Skills: Skills,
 });
 
-module.exports = mongoose.model('Post', postSchema)
+module.exports = mongoose.model("Post", postSchema);

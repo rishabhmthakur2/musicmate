@@ -1,4 +1,10 @@
 const mongoose = require("mongoose");
+let {
+  Skills,
+  Genres,
+  OnboardingReasons,
+  MusicalExpertise,
+} = require("./enums");
 
 const userSchema = mongoose.Schema({
   _id: mongoose.Types.ObjectId,
@@ -15,38 +21,22 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  OnboardingReason: {
-    type: String,
-    enum: ["a", "b", "c"],
-    default: "a",
-  },
+  OnboardingReasons: OnboardingReasons,
   OnboardingFlag: {
     type: Boolean,
     default: false,
   },
-  Keywords: {
-    type: [String],
-    enum: ["a", "b", "c"],
-    default: "a",
-  },
-  KeywordsFlag: {
+  Genres: Genres,
+  GenresFlag: {
     type: Boolean,
     default: false,
   },
-  Skills: {
-    type: [String],
-    enum: ["a", "b", "c"],
-    default: "a",
-  },
+  Skills: Skills,
   SkillsFlag: {
     type: Boolean,
     default: false,
   },
-  MusicalExpertise: {
-    type: String,
-    enum: ["a", "b", "c"],
-    default: "a",
-  },
+  MusicalExpertise: MusicalExpertise,
   NotificationPreference: {
     type: Boolean, //not sure about optional part
     default: false,

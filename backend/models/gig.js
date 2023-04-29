@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+let { Skills, Genres, MusicalExpertise, GigType } = require("./enums");
 
 const gigSchema = mongoose.Schema({
   _id: mongoose.Types.ObjectId,
@@ -8,26 +9,10 @@ const gigSchema = mongoose.Schema({
   Location: { Lat: Number, Long: Number },
   Timestamp: { type: Date, default: Date.now },
   EventLengthInMinutes: Number,
-  Keywords: {
-    type: [String],
-    enum: ["a", "b", "c"],
-    default: "a",
-  },
-  Skills: {
-    type: [String],
-    enum: ["a", "b", "c"],
-    default: "a",
-  },
-  GigType: {
-    type: String,
-    enum: ["one time", "full time", "contract"],
-    default: "one time",
-  },
-  RequiredProficiency: {
-    type: String,
-    enum: ["a", "b", "c"],
-    default: "",
-  },
+  Genres: Genres,
+  Skills: Skills,
+  GigType: GigType,
+  RequiredProficiency: MusicalExpertise,
   Description: String,
 });
 
