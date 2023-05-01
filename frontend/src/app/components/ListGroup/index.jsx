@@ -2,21 +2,19 @@ import ListItem from "app/components/ListItem";
 import MMLogo from "../../../assets/icons/MusicMate List Item Logo.svg";
 import "./listGroup.scss";
 import { Container, Row, Col } from "react-bootstrap";
-const ListGroup = ({ groupName, listData }) => {
+const ListGroup = ({ groupName, listData, isCompressedView }) => {
   return (
     <>
       <div
         style={{
           display: "flex",
-          paddingBottom: "20px",
-          borderBottom: "4px solid #CDE0FF",
         }}
       >
         <Col xs={12}>
           <div
             style={{
               marginLeft: "20px",
-              marginTop: "20px",
+              marginTop: "15px",
               fontStyle: "normal",
               fontWeight: "500",
               fontSize: "24px",
@@ -32,6 +30,7 @@ const ListGroup = ({ groupName, listData }) => {
               heading={"Oliver Stone"}
               subheading={"Tupper & Reed"}
               caption={"Berkeley, CA"}
+              // isBookmarked={true}
             />
           </Row>
           <Row>
@@ -50,19 +49,25 @@ const ListGroup = ({ groupName, listData }) => {
               caption={"Berkeley, CA"}
             />
           </Row>
-          <div
-            style={{
-              marginTop: "25px",
-              fontStyle: "normal",
-              fontWeight: "600",
-              fontSize: "18px",
-              lineHeight: "22px",
-              color: "#9B9B9B",
-              textAlign: "center",
-            }}
-          >
-            See all {groupName} results
-          </div>
+          {isCompressedView && (
+            <div
+              style={{
+                marginTop: "15px",
+                fontStyle: "normal",
+                fontWeight: "600",
+                fontSize: "18px",
+                lineHeight: "22px",
+                color: "#9B9B9B",
+                textAlign: "center",
+                borderTop: "2px solid #CDE0FF",
+                paddingTop: "10px",
+                paddingBottom: "10px",
+                borderBottom: "4px solid #CDE0FF",
+              }}
+            >
+              See all {groupName.toLowerCase()} results
+            </div>
+          )}
         </Col>
       </div>
     </>

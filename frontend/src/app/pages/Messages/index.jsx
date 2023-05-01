@@ -5,7 +5,9 @@ import NavBar from "app/components/NavBar";
 import SearchBar from "app/components/SearchBar";
 import { ReactComponent as BackArrow } from "../../../assets/icons/back.svg";
 import { Row, Col } from "react-bootstrap";
-const MessageList = () => {
+import { useNavigate } from "react-router-dom";
+const Messages = () => {
+  const navigate = useNavigate();
   const [profileUserName, setProfileUserName] = useState("Margaret Mulholland");
   const [messages, setMessages] = useState([
     {
@@ -51,7 +53,13 @@ const MessageList = () => {
     >
       <Row className="d-flex align-content-center align-items-center">
         {" "}
-        <Col xs={1} style={{ marginLeft: "20px" }}>
+        <Col
+          xs={1}
+          style={{ marginLeft: "20px" }}
+          onClick={() => {
+            navigate("/landing");
+          }}
+        >
           <BackArrow />
         </Col>
         <Col xs={9}>
@@ -123,4 +131,4 @@ const MessageList = () => {
   );
 };
 
-export default MessageList;
+export default Messages;

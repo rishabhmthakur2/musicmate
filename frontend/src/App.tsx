@@ -8,9 +8,11 @@ import "./App.scss";
 import Upload from "app/pages/upload";
 import UploadSucess from "app/pages/upload/components/success";
 import Landing from "app/pages/Landing";
-import MessageList from "app/pages/MessageList";
+import Messages from "app/pages/Messages";
 import Chat from "app/pages/Chat";
 import Search from "app/pages/Search";
+import Profile from "app/pages/Profile";
+import TestPage from "app/pages/Test";
 
 function App() {
   return (
@@ -40,13 +42,19 @@ function App() {
         <Route path="/landing" element={<Landing />}>
           {" "}
         </Route>
-        <Route path="/messages" element={<MessageList />}>
+        <Route path="/messages" element={<Messages />}>
           {" "}
         </Route>
         <Route path="/messages/view" element={<Chat />}>
           {" "}
         </Route>
         <Route path="/search" element={<Search />}>
+          {" "}
+        </Route>
+        <Route path="/profile" element={<Profile />}>
+          {" "}
+        </Route>
+        <Route path="/test" element={<TestPage />}>
           {" "}
         </Route>
       </Routes>

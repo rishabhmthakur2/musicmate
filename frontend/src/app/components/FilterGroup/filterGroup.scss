@@ -1,0 +1,51 @@
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  justify-content: center;
+}
+
+.filter-box {
+  width: 337px;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #eae2e2;
+  //   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.filter-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 50px;
+  margin-top: 25px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  color: #9b9b9b;
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.filter-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  //   border-top: 1px solid #eae2e2;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-left: 11px;
+}
+
+.checkbox-label {
+  margin-left: 10px;
+  width: 20px;
+  height: 20px;
+  margin-right: 20px;
+}
