@@ -1,20 +1,27 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
-import { Container, Row, Form, Col } from "react-bootstrap";
-
+import { Form } from "react-bootstrap";
 import AuthHeader from "../Components/AuthHeader";
 import "../auth.scss";
-import { useNavigate } from "react-router-dom";
+const bcrypt = require("bcryptjs");
 
 const StepTwo = ({ handleNext, handlePrevious }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event) => {
+  const saltRounds = 10;
+
+  const hashPassword = async (password) => {
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hash = await bcrypt.hash(password, salt);
+    return hash;
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const userData = {};
     userData["email"] = email;
-    userData["password"] = password;
+    userData["password"] = await hashPassword(password);
     localStorage.setItem("userData", JSON.stringify(userData));
     if (password.length < 8) {
       alert("Password should be atleast 8 characters");
@@ -31,7 +38,7 @@ const StepTwo = ({ handleNext, handlePrevious }) => {
     return emailPattern.test(email);
   };
   return (
-    <div className="auth-main-wrap" style={{marginTop: "120px"}}>
+    <div className="auth-main-wrap" style={{ marginTop: "120px" }}>
       <AuthHeader />
       <Form className="mt-40">
         <Form.Group className="mb-1">
@@ -59,7 +66,7 @@ const StepTwo = ({ handleNext, handlePrevious }) => {
             <Form.Label className="auth-label">Password</Form.Label>
             <Form.Control
               className=" p-2 auth-input-wrap"
-              type="text"
+              type="password"
               placeholder="8 or more characters"
               onChange={(event) => {
                 setPassword(event.target.value);

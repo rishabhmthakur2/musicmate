@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { Container, Row, Form, Col } from "react-bootstrap";
-
+import axios from "axios";
 import AuthHeader from "../Components/AuthHeader";
 import "../auth.scss";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,23 @@ const StepFour = ({ handleNext, handlePrevious }) => {
     console.log({ userData });
     setNameType(userData["nameType"]);
   }, []);
-  const handleSubmit = (event) => {
+
+  const registerUser = async (userData) => {
+    const userRegistration = {
+      FirstName: userData.firstName,
+      LastName: userData.lastName,
+      EmailId: userData.email,
+      Password: userData.password,
+    };
+    const userId = await axios.post(
+      "http://localhost:8000/users",
+      userRegistration
+    );
+    console.log(userId.data.createdUser._id);
+    return userId.data.createdUser._id;
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const userData = JSON.parse(localStorage.getItem("userData"));
     if (
@@ -29,16 +45,17 @@ const StepFour = ({ handleNext, handlePrevious }) => {
       userData["lastName"] = lastName;
     } else if (nameType === "Stage Name" && stageName.length > 0) {
       userData["firstName"] = stageName;
-      userData["secondName"] = "";
+      userData["lastName"] = "";
     } else {
       alert("Invalid/Missing inputs!");
     }
+    const userId = await registerUser(userData);
+    userData["userId"] = userId;
     localStorage.setItem("userData", JSON.stringify(userData));
-    // Make API call for user submission here!
     navigate("/welcome");
   };
   return (
-    <div className="auth-main-wrap" style={{marginTop: "120px"}}>
+    <div className="auth-main-wrap" style={{ marginTop: "120px" }}>
       <AuthHeader />
       <Form className="mt-40">
         <Form.Group className="mb-1">

@@ -53,7 +53,7 @@ const StepTwo = ({}) => {
             <Form.Label className="auth-label">Password</Form.Label>
             <Form.Control
               className=" p-2 auth-input-wrap"
-              type="text"
+              type="password"
               placeholder="8 or more characters"
               onChange={(event) => {
                 setPassword(event.target.value);

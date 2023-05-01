@@ -21,17 +21,26 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  OnboardingReasons: OnboardingReasons,
+  OnboardingReasons: {
+    type: [String],
+    default: [""],
+  },
   OnboardingFlag: {
     type: Boolean,
     default: false,
   },
-  Genres: Genres,
+  Genres: {
+    type: [String],
+    default: [""],
+  },
   GenresFlag: {
     type: Boolean,
     default: false,
   },
-  Skills: Skills,
+  Skills: {
+    type: [String],
+    default: [""],
+  },
   SkillsFlag: {
     type: Boolean,
     default: false,

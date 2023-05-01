@@ -51,6 +51,7 @@ const musicalExpertise = mongoose.Schema({
   MusicalExpertise: {
     type: String,
     enum: ["Beginner", "Intermediary", "Advanced", "Professional"],
+    default: ["Beginner"]
   },
 });
 const gigType = mongoose.Schema({

@@ -247,6 +247,7 @@ router.post("/", (req, res, next) => {
  */
 router.patch("/:id", async (request, response) => {
   try {
+    console.log({ data: request.body });
     await User.findByIdAndUpdate(request.params.id, request.body);
     response.send("updated user" + request.params.id);
   } catch (error) {

@@ -5,6 +5,7 @@ let cookieParser = require("cookie-parser");
 let logger = require("morgan");
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+const cors = require("cors");
 
 // ROUTERS GO HERE
 let indexRouter = require("./routes/index");
@@ -21,6 +22,8 @@ let app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 app.set("port", process.env.PORT || 8000);
+
+app.use(cors());
 
 // auto-swagger setup
 const swaggerOptions = {

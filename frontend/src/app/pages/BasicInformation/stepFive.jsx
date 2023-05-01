@@ -10,15 +10,44 @@ import { ReactComponent as EyeSelected } from "../../../assets/images/eye-select
 import BadgeMain from "./components/Badge";
 import { Badge } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 
 const StepFour = ({ handleNext, handlePrevious }) => {
   const navigate = useNavigate();
   const [enableNotifications, setEnableNotifications] = useState(false);
+  const updateUserInDB = async (userData) => {
+    const updatedUser = {
+      _id: userData.userId,
+      FirstName: userData.firstName,
+      LastName: userData.lastName,
+      Password: userData.password,
+      EmailId: userData.email,
+      Location: {
+        lat: userData.location.data.lat,
+        long: userData.location.data.long,
+        city: userData.location.data.city,
+      },
+      OnboardingReasons: userData.purpose.data,
+      Genres: userData.genres.data,
+      Skills: userData.skills.data,
+      NotificationPreference: userData.enableNotifications,
+      LocationFlag: userData.location.isVisible,
+      GenresFlag: userData.genres.isVisible,
+      SkillsFlag: userData.skills.isVisible,
+      OnboardingFlag: userData.purpose.isVisible,
+    };
+    console.log({ updatedUser });
+    const updatedUserData = await axios.patch(
+      `http://localhost:8000/users/${userData.userId}`,
+      updatedUser
+    );
+    return updatedUserData;
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
     const userData = JSON.parse(localStorage.getItem("userData"));
     userData["enableNotifications"] = enableNotifications;
+    const userUpdateddata = await updateUserInDB(userData);
     localStorage.setItem("userData", JSON.stringify(userData));
     handleNext();
   };
