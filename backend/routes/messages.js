@@ -3,6 +3,7 @@ var router = express.Router();
 const mongoose = require("mongoose");
 
 const Message = require("../models/message");
+const Users = require("../models/user");
 
 /**
  * @swagger
@@ -110,14 +111,45 @@ router.get("/:id", async (request, response) => {
  *      '200':
  *        description: list of messages between two users
  */
-router.get("/:sender_id/:receiver_id", async (request, response) => {
+router.get("/:senderid/:receiverid", async (request, response) => {
   try {
-    const output = await Message.find({
-      sender_id: request.params.sender_id,
-      receiver_id: request.params.receiver_id,
-    });
+    const senderId = request.params.senderid;
+    console.log(senderId);
+
+    const receiverId = request.params.receiverid;
+    console.log(receiverId);
+
+    const messagesAtoB = await Message.find(
+      {
+        $or: [
+          { sender_id: senderId, receiver_id: receiverId },
+          { sender_id: receiverId, receiver_id: senderId },
+        ],
+      },
+      {
+        sender_id: 1,
+        receiver_id: 1,
+        message_content: 1,
+        sent_at: 1,
+        _id: 0,
+      }
+    ).sort({ sent_at: -1 });
+    console.log(messagesAtoB);
+
+    const outputSender = await Users.find({ _id: request.params.senderid });
+    senderName = outputSender[0]["FirstName"];
+
+    const outputReceiver = await Users.find({ _id: request.params.receiverid });
+    receiverName = outputReceiver[0]["FirstName"];
+
+    const finalResult = {
+      senderName: senderName,
+      receiverName: receiverName,
+      messages: messagesAtoB,
+    };
+
     try {
-      response.status(200).send(output);
+      response.status(200).send(finalResult);
     } catch (error) {
       response.status(500).send(error);
     }
