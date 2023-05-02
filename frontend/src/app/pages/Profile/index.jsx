@@ -1,21 +1,37 @@
 import { Row, Col, Button, Container } from "react-bootstrap";
 import { ReactComponent as Send } from "../../../assets/icons/sendMessage.svg";
 import { ReactComponent as BackArrow } from "../../../assets/icons/back.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MMLogo from "../../../assets/images/MMTopBarLogo.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Message from "../../../assets/images/message.svg";
 import { ReactComponent as UserProfileImg } from "../../../assets/images/profile-pic.svg";
 import Location from "../../../assets/icons/location.svg";
 import NavBar from "app/components/NavBar";
 import BadgeMain from "../BasicInformation/components/Badge";
+import axios from "axios";
 
 const Profile = () => {
+  const { userId } = useParams;
+  console.log({ userId });
   const [options, setOptions] = useState([
     { name: "Bossa Nova", selected: true },
     { name: "Classical", selected: true },
     { name: "Country", selected: true },
   ]);
+  const [skills, setSkills] = useState(["None"]);
+  const [genres, setGenres] = useState(["None"]);
+
+  useEffect(() => {
+    const getProfileData = async () => {
+      const userData = JSON.parse(localStorage.getItem("loggedUser"));
+      if (userData._id === userId) {
+        // Get data from localStorage
+      } else {
+        // Get data from API
+      }
+    };
+  });
   const navigate = useNavigate();
   return (
     <div
