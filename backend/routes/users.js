@@ -54,8 +54,8 @@ router.get("/:id", async (request, response) => {
  *        description: success message about the login
  */
 router.post("/login", async (request, response) => {
-  let username = req.body.username;
-  let password = req.body.password;
+  let username = request.body.username;
+  let password = request.body.password;
 
   // Find the user with the matching username and password
   const user = await User.findOne({ username, password });

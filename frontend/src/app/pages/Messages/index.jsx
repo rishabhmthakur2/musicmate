@@ -1,45 +1,81 @@
 import MessageListItem from "app/components/MessageListItem";
 import Profile from "../../../assets/icons/profile.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NavBar from "app/components/NavBar";
 import SearchBar from "app/components/SearchBar";
 import { ReactComponent as BackArrow } from "../../../assets/icons/back.svg";
 import { Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 const Messages = () => {
   const navigate = useNavigate();
   const [profileUserName, setProfileUserName] = useState("Margaret Mulholland");
+  const [chatData, setChatData] = useState([
+    {
+      userId: "643a388d97188ba31d5e7ef5",
+      userName: "Avash Adhikari",
+      messages: [
+        {
+          _id: "643a39e797188ba31d5e7ef8",
+          sender_id: "64139628a27ef4424c3a4ded",
+          receiver_id: "643a388d97188ba31d5e7ef5",
+          message_content: "Hello world",
+          is_read: false,
+          is_deleted: false,
+          sent_at: "2023-04-15T05:45:11.911Z",
+          __v: 0,
+        },
+      ],
+    },
+  ]);
   const [messages, setMessages] = useState([
     {
       profilePic: Profile,
-      userName: "Rishabh Thakur",
+      userName: "Test User",
       messagePreview: "Hahaha so",
       messageTime: "1 hour ago",
       unread: true,
-    },
-    {
-      profilePic: Profile,
-      userName: "Rishabh Thakur",
-      messagePreview: "Hahaha so",
-      messageTime: "1 hour ago",
-      unread: false,
-    },
-    {
-      profilePic: Profile,
-      userName: "Rishabh Thakur",
-      messagePreview: "Hahaha so",
-      messageTime: "1 hour ago",
-      unread: true,
-    },
-    {
-      profilePic: Profile,
-      userName: "Rishabh Thakur",
-      messagePreview: "Hahaha so",
-      messageTime: "1 hour ago",
-      unread: false,
     },
   ]);
-  const [unreadCount, setUnreadCount] = useState(2);
+  useEffect(() => {
+    const userId = JSON.parse(localStorage.getItem("loggedUser"))._id;
+    const getList = async (userId) => {
+      try {
+        const chatListData = await axios.get(
+          `http://localhost:8000/messages/chatlist/${userId}`
+        );
+        const chatList = chatListData.data;
+        let userListData = [];
+        try {
+          chatList.forEach(async (listItem) => {
+            const chatUser = await axios.get(
+              `http://localhost:8000/users/${listItem}`
+            );
+            const chatMessagesOne = await axios.get(
+              `http://localhost:8000/messages/${listItem}/${userId}`
+            );
+            const chatMessagesTwo = await axios.get(
+              `http://localhost:8000/messages/${userId}/${listItem}`
+            );
+            userListData.push({
+              userId: listItem,
+              userName:
+                chatUser.data[0].FirstName + " " + chatUser.data[0].LastName,
+              messages: chatMessagesOne.data.concat(chatMessagesTwo.data),
+            });
+          });
+          console.log({ userListData });
+        } catch (e) {
+          console.log("Something went wrong");
+        }
+      } catch (e) {
+        console.log("Something went wrong");
+      }
+    };
+    getList(userId);
+  }, []);
+
   return (
     <div
       style={{

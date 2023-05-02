@@ -45,7 +45,6 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  MusicalExpertise: MusicalExpertise,
   NotificationPreference: {
     type: Boolean, //not sure about optional part
     default: false,

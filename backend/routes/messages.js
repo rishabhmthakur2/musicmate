@@ -6,6 +6,49 @@ const Message = require("../models/message");
 
 /**
  * @swagger
+ * /messages/chatlist/{id}:
+ *  get:
+ *    tags:
+ *      - messages
+ *    description: Get all users the given user is talking to
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      '200':
+ *        description: list of users that the user is talking to
+ */
+router.get("/chatlist/:id", async (request, response) => {
+  const tempid = request.params.id;
+  if (tempid.length != 24) {
+    response.status(400).send("Please send a valid id of 24 characters");
+  } else {
+    try {
+      const resultOne = await Message.distinct("receiver_id", {
+        sender_id: tempid,
+      });
+      const resultTwo = await Message.distinct("sender_id", {
+        receiver_id: tempid,
+      });
+      const combinedArr = resultOne.concat(resultTwo);
+      const uniqueArr = combinedArr.filter(
+        (value, index) => combinedArr.indexOf(value) === index
+      );
+      try {
+        response.status(200).send(uniqueArr);
+      } catch (error) {
+        response.status(500).send(error);
+      }
+    } catch (error) {
+      response.status(500).send(error);
+    }
+  }
+});
+/**
+ * @swagger
  * /messages/{id}:
  *  get:
  *    tags:
@@ -23,18 +66,22 @@ const Message = require("../models/message");
  */
 router.get("/:id", async (request, response) => {
   var tempid = request.params.id;
-
+  console.log({ tempid });
   if (tempid.length != 24) {
     response.status(400).send("Please send a valid id of 24 characters");
   } else {
     try {
-      const output = await Message.find({ sender_id: request.params.id });
+      const output = await Message.find({
+        $or: [
+          { sender_id: request.params.id },
+          { receiver_id: request.params.id },
+        ],
+      });
       try {
         response.status(200).send(output);
       } catch (error) {
         response.status(500).send(error);
       }
-      ß;
     } catch (error) {
       response.status(500).send(error);
     }
@@ -76,45 +123,6 @@ router.get("/:sender_id/:receiver_id", async (request, response) => {
     }
   } catch (error) {
     response.status(500).send(error);
-  }
-});
-
-/**
- * @swagger
- * /messages/chatlist/{id}:
- *  get:
- *    tags:
- *      - messages
- *    description: Get all users the given user is talking to
- *    parameters:
- *      - name: id
- *        in: path
- *        required: true
- *        schema:
- *          type: string
- *    responses:
- *      '200':
- *        description: list of users that the user is talking to
- */
-router.get("/chatlist/:id", async (request, response) => {
-  var tempid = request.params.id;
-
-  if (tempid.length != 24) {
-    response.status(400).send("Please send a valid id of 24 characters");
-  } else {
-    try {
-      const result = await Message.distinct("receiver_id", {
-        sender_id: tempid,
-      });
-      console.log(result);
-      try {
-        response.status(200).send(result);
-      } catch (error) {
-        response.status(500).send(error);
-      }
-    } catch (error) {
-      response.status(500).send(error);
-    }
   }
 });
 

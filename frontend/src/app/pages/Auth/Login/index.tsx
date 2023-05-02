@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { Container, Row, Form, Col } from "react-bootstrap";
+import axios from "axios";
 
 import AuthHeader from "../Components/AuthHeader";
 import "../auth.scss";
@@ -11,8 +12,9 @@ const StepTwo = ({}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberPassword, setRememberPassword] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const userData = {};
     userData["email"] = email;
@@ -24,7 +26,27 @@ const StepTwo = ({}) => {
       alert("Please enter a valid email address!");
       return;
     } else {
-      //   handleNext();
+      const login = await axios.post("http://localhost:8000/users/login", {
+        username: email,
+        password,
+      });
+      console.log({ login });
+      if (login.status === 200) {
+        const userId = login.data.userid;
+        const userData = {
+          userId,
+        };
+        localStorage.setItem("loggedUser", JSON.stringify(userData));
+        const user = await axios(`http://localhost:8000/users/${userId}`);
+        localStorage.setItem("loggedUser", JSON.stringify(user.data[0]));
+        if (user.status === 200) {
+          navigate("/landing");
+        } else {
+          alert("Something went wrong");
+        }
+      } else {
+        alert("Invalid username or password");
+      }
     }
   };
   const isEmailValid = (email) => {
@@ -91,6 +113,7 @@ const StepTwo = ({}) => {
             className="primary-btn"
             style={{ marginTop: "40px" }}
             type="submit"
+            onClick={handleSubmit}
           >
             Continue
           </Button>
