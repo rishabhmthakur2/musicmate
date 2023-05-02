@@ -41,39 +41,10 @@ const Messages = () => {
   useEffect(() => {
     const userId = JSON.parse(localStorage.getItem("loggedUser"))._id;
     const getList = async (userId) => {
-      try {
-        const chatListData = await axios.get(
-          `http://localhost:8000/messages/chatlist/${userId}`
-        );
-        const chatList = chatListData.data;
-        let userListData = [];
-        try {
-          chatList.forEach(async (listItem) => {
-            const chatUser = await axios.get(
-              `http://localhost:8000/users/${listItem}`
-            );
-            const chatMessagesOne = await axios.get(
-              `http://localhost:8000/messages/${listItem}/${userId}`
-            );
-            const chatMessagesTwo = await axios.get(
-              `http://localhost:8000/messages/${userId}/${listItem}`
-            );
-            userListData.push({
-              userId: listItem,
-              userName:
-                chatUser.data[0].FirstName + " " + chatUser.data[0].LastName,
-              messages: chatMessagesOne.data.concat(chatMessagesTwo.data),
-            });
-          });
-          console.log({ userListData });
-        } catch (e) {
-          console.log("Something went wrong");
-        }
-      } catch (e) {
-        console.log("Something went wrong");
-      }
+      const chatListData = await axios.get(
+        `http://localhost:8000/messages/chatlist/${userId}`
+      );
     };
-    getList(userId);
   }, []);
 
   return (

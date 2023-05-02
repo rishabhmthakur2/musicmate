@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { Container, Row, Form, Col } from "react-bootstrap";
 import axios from "axios";
+import bcrypt from "bcryptjs";
 
 import AuthHeader from "../Components/AuthHeader";
 import "../auth.scss";
@@ -14,12 +15,13 @@ const StepTwo = ({}) => {
   const [rememberPassword, setRememberPassword] = useState(false);
   const navigate = useNavigate();
 
+  const hashPassword = async (password) => {
+    const hash = await bcrypt.hash(password, process.env.HASH_SALT);
+    return hash;
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const userData = {};
-    userData["email"] = email;
-    userData["password"] = password;
-    localStorage.setItem("userData", JSON.stringify(userData));
+    const hashedPassword = await hashPassword(password);
     if (password.length < 8) {
       alert("Password should be atleast 8 characters");
     } else if (!isEmailValid(email)) {
@@ -28,7 +30,7 @@ const StepTwo = ({}) => {
     } else {
       const login = await axios.post("http://localhost:8000/users/login", {
         username: email,
-        password,
+        hashedPassword,
       });
       console.log({ login });
       if (login.status === 200) {

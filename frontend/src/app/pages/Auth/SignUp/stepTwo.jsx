@@ -9,11 +9,8 @@ const StepTwo = ({ handleNext, handlePrevious }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const saltRounds = 10;
-
   const hashPassword = async (password) => {
-    const salt = await bcrypt.genSalt(saltRounds);
-    const hash = await bcrypt.hash(password, salt);
+    const hash = await bcrypt.hash(password, process.env.HASH_SALT);
     return hash;
   };
 
