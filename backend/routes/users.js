@@ -54,12 +54,11 @@ router.get("/:id", async (request, response) => {
  *        description: success message about the login
  */
 router.post("/login", async (request, response) => {
-  let username = request.body.username;
-  let password = request.body.password;
-
   // Find the user with the matching username and password
-  const user = await User.findOne({ username, password });
-
+  const user = await User.findOne({
+    EmailId: request.body.username,
+    Password: request.body.password,
+  });
   // If no user is found, return false
   if (!user) {
     return response.json({ success: false, userid: -1 });
