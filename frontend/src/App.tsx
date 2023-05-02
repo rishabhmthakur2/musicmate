@@ -51,7 +51,7 @@ function App() {
         <Route path="/search" element={<Search />}>
           {" "}
         </Route>
-        <Route path="/profile/:id" element={<Profile />}>
+        <Route path="/profile/:userId" element={<Profile />}>
           {" "}
         </Route>
         <Route path="/test" element={<TestPage />}>

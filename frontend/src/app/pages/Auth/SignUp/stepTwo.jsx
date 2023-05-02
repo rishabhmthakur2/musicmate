@@ -3,14 +3,13 @@ import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import AuthHeader from "../Components/AuthHeader";
 import "../auth.scss";
-const bcrypt = require("bcryptjs");
+import {MD5} from "md5-js-tools";
 
 const StepTwo = ({ handleNext, handlePrevious }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const hashPassword = async (password) => {
-    const hash = await bcrypt.hash(password, process.env.HASH_SALT);
+    const hash = MD5.generate(password);
     return hash;
   };
 

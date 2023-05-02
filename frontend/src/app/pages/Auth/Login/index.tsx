@@ -1,13 +1,11 @@
-import React, { useState } from "react";
-import { Button } from "react-bootstrap";
-import { Container, Row, Form, Col } from "react-bootstrap";
-import axios from "axios";
-import bcrypt from "bcryptjs";
-
-import AuthHeader from "../Components/AuthHeader";
-import "../auth.scss";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import TopNavBar from "app/components/TopBar";
+import { Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import axios from "axios";
+import AuthHeader from "../Components/AuthHeader";
+import { MD5 } from "md5-js-tools";
+import "../auth.scss";
 
 const StepTwo = ({}) => {
   const [email, setEmail] = useState("");
@@ -15,13 +13,14 @@ const StepTwo = ({}) => {
   const [rememberPassword, setRememberPassword] = useState(false);
   const navigate = useNavigate();
 
-  const hashPassword = async (password) => {
-    const hash = await bcrypt.hash(password, process.env.HASH_SALT);
+  const hashPassword = (password) => {
+    const hash = MD5.generate(password);
+    console.log({ hash });
     return hash;
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const hashedPassword = await hashPassword(password);
+    const hashedPassword = hashPassword(password);
     if (password.length < 8) {
       alert("Password should be atleast 8 characters");
     } else if (!isEmailValid(email)) {
@@ -30,10 +29,10 @@ const StepTwo = ({}) => {
     } else {
       const login = await axios.post("http://localhost:8000/users/login", {
         username: email,
-        hashedPassword,
+        password: hashedPassword,
       });
       console.log({ login });
-      if (login.status === 200) {
+      if (login.data.success) {
         const userId = login.data.userid;
         const userData = {
           userId,

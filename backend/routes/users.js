@@ -63,7 +63,6 @@ router.post("/login", async (request, response) => {
   if (!user) {
     return response.json({ success: false, userid: -1 });
   }
-
   // If a user is found, return true
   response.json({ success: true, userid: user._id });
 });

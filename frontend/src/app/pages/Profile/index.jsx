@@ -8,30 +8,56 @@ import Message from "../../../assets/images/message.svg";
 import { ReactComponent as UserProfileImg } from "../../../assets/images/profile-pic.svg";
 import Location from "../../../assets/icons/location.svg";
 import NavBar from "app/components/NavBar";
-import BadgeMain from "../BasicInformation/components/Badge";
 import axios from "axios";
+import BadgeSecondary from "../BasicInformation/components/Badge/secondary";
 
 const Profile = () => {
-  const { userId } = useParams;
-  console.log({ userId });
-  const [options, setOptions] = useState([
-    { name: "Bossa Nova", selected: true },
-    { name: "Classical", selected: true },
-    { name: "Country", selected: true },
-  ]);
-  const [skills, setSkills] = useState(["None"]);
-  const [genres, setGenres] = useState(["None"]);
+  const { userId } = useParams();
+  const [skills, setSkills] = useState(["Loading"]);
+  const [isSkillVisible, setIsSkillVisible] = useState(true);
+  const [genres, setGenres] = useState(["Loading"]);
+  const [isGenreVisible, setIsGenreVisible] = useState(true);
+  const [onboardingReasons, setOnboardingReasons] = useState(["Loading"]);
+  const [isOnboardingReasonVisible, setIsOnboardingReasonVisible] =
+    useState(true);
+  const [userLocation, setUserLocation] = useState("");
+  const [isUserLocationVisible, setIsUserLocationVisible] = useState("");
+  const [userName, setUserName] = useState("");
+  const [userHeading, setUserHeading] = useState("");
 
   useEffect(() => {
     const getProfileData = async () => {
       const userData = JSON.parse(localStorage.getItem("loggedUser"));
       if (userData._id === userId) {
-        // Get data from localStorage
+        setSkills([...userData.Skills]);
+        setIsSkillVisible(userData.SkillsFlag);
+        setGenres([...userData.Genres]);
+        setIsGenreVisible(userData.GenresFlag);
+        setOnboardingReasons([...userData.OnboardingReasons]);
+        setIsOnboardingReasonVisible(userData.OnboardingFlag);
+        setUserLocation(userData.Location.city);
+        setIsUserLocationVisible(userData.LocationFlag);
+        setUserName(userData.FirstName + " " + userData.LastName);
       } else {
-        // Get data from API
+        const userDataAPI = await axios.get(
+          `http://localhost:8000/users/${userId}`
+        );
+        if (userDataAPI.status === 200) {
+          const userData = userDataAPI.data;
+          setSkills([...userData.Skills]);
+          setIsSkillVisible(userData.SkillsFlag);
+          setGenres([...userData.Genres]);
+          setIsGenreVisible(userData.GenresFlag);
+          setOnboardingReasons([...userData.OnboardingReasons]);
+          setIsOnboardingReasonVisible(userData.OnboardingFlag);
+          setUserLocation(userData.Location.city);
+          setIsUserLocationVisible(userData.LocationFlag);
+          setUserName(userData.FirstName + " " + userData.LastName);
+        }
       }
     };
-  });
+    getProfileData();
+  }, []);
   const navigate = useNavigate();
   return (
     <div
@@ -79,7 +105,7 @@ const Profile = () => {
       >
         <UserProfileImg />
         <div className="auth-title" style={{ marginTop: "25px" }}>
-          Oliver Stone
+          {userName}
         </div>
         <div
           className="desc-text"
@@ -88,7 +114,9 @@ const Profile = () => {
             flex: "1",
           }}
         >
-          Freelance music technologist based in SF Bay Area
+          {userHeading !== ""
+            ? userHeading
+            : "Freelance music technologist based in SF Bay Area"}
         </div>
         <div
           className="desc-text"
@@ -98,7 +126,7 @@ const Profile = () => {
           }}
         >
           <span>
-            <img src={Location} /> Berkeley, CA{" "}
+            <img src={Location} /> {userLocation}
           </span>
         </div>
         <Button
@@ -123,88 +151,108 @@ const Profile = () => {
           marginLwidth: "100vw",
         }}
       ></div>
-      <div
-        style={{
-          marginLeft: "35px",
-          marginTop: "25px",
-          width: "320px",
-          height: "100%",
-          paddingRight: "35px",
-        }}
-      >
-        <div className="sec-title-left">Looking For:</div>
-        <ul
-          style={{
-            marginTop: "25px",
-          }}
-        >
-          <li className="desc-text">Gig Opportunities</li>
-          <li className="desc-text">Mates to jam with</li>
-        </ul>
-      </div>
-      <div
-        style={{
-          marginTop: "40px",
-          borderBottom: "4px solid #CDE0FF",
-          marginLwidth: "100vw",
-        }}
-      ></div>
-      <div
-        style={{
-          marginLeft: "35px",
-          marginTop: "25px",
-          width: "320px",
-          height: "100%",
-          paddingRight: "35px",
-        }}
-      >
-        <div className="sec-title-left">Genre(s)</div>
-        <div
-          className="d-flex flex-column justify-content-center"
-          style={{ marginTop: "25px" }}
-        >
-          <Container className="p-0">
-            <Row className="d-flex">
-              <BadgeMain options={options} setOptions={setOptions} />
-            </Row>
-          </Container>
-        </div>
-      </div>
-      <div
-        style={{
-          marginTop: "40px",
-          borderBottom: "4px solid #CDE0FF",
-          marginLwidth: "100vw",
-        }}
-      ></div>
-      <div
-        style={{
-          marginLeft: "35px",
-          marginTop: "25px",
-          width: "320px",
-          height: "100%",
-          paddingRight: "35px",
-        }}
-      >
-        <div className="sec-title-left">Skill(s)</div>
-        <div
-          className="d-flex flex-column justify-content-center"
-          style={{ marginTop: "25px" }}
-        >
-          <Container className="p-0">
-            <Row className="d-flex">
-              <BadgeMain options={options} setOptions={setOptions} />
-            </Row>
-          </Container>
-        </div>
-      </div>
-      <div
-        style={{
-          marginTop: "40px",
-          borderBottom: "4px solid #CDE0FF",
-          marginLwidth: "100vw",
-        }}
-      ></div>
+      {isOnboardingReasonVisible && (
+        <>
+          <div
+            style={{
+              marginLeft: "35px",
+              marginTop: "25px",
+              width: "320px",
+              height: "100%",
+              paddingRight: "35px",
+            }}
+          >
+            <div className="sec-title-left">Looking For:</div>
+            <ul
+              style={{
+                marginTop: "25px",
+              }}
+            >
+              {onboardingReasons.map((reason, i) => {
+                return (
+                  <li className="desc-text" key={i}>
+                    {reason}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <div
+            style={{
+              marginTop: "40px",
+              borderBottom: "4px solid #CDE0FF",
+              marginLwidth: "100vw",
+            }}
+          ></div>
+        </>
+      )}
+
+      {isGenreVisible && (
+        <>
+          <div
+            style={{
+              marginLeft: "35px",
+              marginTop: "25px",
+              width: "320px",
+              height: "100%",
+              paddingRight: "35px",
+            }}
+          >
+            <div className="sec-title-left">Genre(s)</div>
+            <div
+              className="d-flex flex-column justify-content-center"
+              style={{ marginTop: "25px" }}
+            >
+              <Container className="p-0">
+                <Row className="d-flex">
+                  <BadgeSecondary options={genres} />
+                </Row>
+              </Container>
+            </div>
+          </div>
+          <div
+            style={{
+              marginTop: "40px",
+              borderBottom: "4px solid #CDE0FF",
+              marginLwidth: "100vw",
+            }}
+          ></div>
+        </>
+      )}
+
+      {isSkillVisible && (
+        <>
+          <div
+            style={{
+              marginLeft: "35px",
+              marginTop: "25px",
+              width: "320px",
+              height: "100%",
+              paddingRight: "35px",
+            }}
+          >
+            <div className="sec-title-left">Skill(s)</div>
+            <div
+              className="d-flex flex-column justify-content-center"
+              style={{ marginTop: "25px" }}
+            >
+              <Container className="p-0">
+                <Row className="d-flex">
+                  <BadgeSecondary options={skills} />
+                </Row>
+              </Container>
+            </div>
+          </div>
+          <div
+            style={{
+              marginTop: "40px",
+              borderBottom: "4px solid #CDE0FF",
+              marginLwidth: "100vw",
+            }}
+          ></div>
+        </>
+      )}
+
       <NavBar />
     </div>
   );
