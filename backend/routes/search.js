@@ -45,7 +45,7 @@ router.post("/", async (req, res, next) => {
       ],
     };
     const users = await User.find(query);
-    result["users"] = users;
+    result["People"] = users;
   }
 
   if (searchTypes.includes("Gigs")) {
@@ -75,7 +75,7 @@ router.post("/", async (req, res, next) => {
       ],
     };
     const gigs = await Gig.find(query);
-    result["gigs"] = gigs;
+    result["Gigs"] = gigs;
   }
 
   if (searchTypes.includes("Posts")) {
@@ -93,7 +93,7 @@ router.post("/", async (req, res, next) => {
       ],
     };
     const posts = await post.find(query);
-    result["posts"] = posts;
+    result["Posts"] = posts;
   }
 
   res.status(200).send(result);
