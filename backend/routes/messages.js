@@ -138,9 +138,13 @@ router.get("/:senderid/:receiverid", async (request, response) => {
 
     const outputSender = await Users.find({ _id: request.params.senderid });
     senderName = outputSender[0]["FirstName"];
+    senderName = senderName.concat(" ");
+    senderName = senderName.concat(outputSender[0]["LastName"]);
 
     const outputReceiver = await Users.find({ _id: request.params.receiverid });
     receiverName = outputReceiver[0]["FirstName"];
+    receiverName = receiverName.concat(" ");
+    receiverName = receiverName.concat(outputReceiver[0]["LastName"]);
 
     const finalResult = {
       senderName: senderName,
