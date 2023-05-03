@@ -7,9 +7,19 @@ import { ReactComponent as Gigs } from "../../../assets/icons/gigs.svg";
 import { ReactComponent as Profile } from "../../../assets/icons/profile.svg";
 import { Row, Container, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 function NavBar(props) {
+  const [userId, setUserId] = useState("");
   const navigate = useNavigate();
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("loggedUser"));
+    if (userData._id) {
+      setUserId(userData._id);
+    } else {
+      console.log("Something went wrong");
+    }
+  });
   return (
     <Container
       fluid
@@ -45,8 +55,8 @@ function NavBar(props) {
         <Col xs={2}>
           <Gigs />
         </Col>
-        <Col xs={2}>
-          <Profile />
+        <Col xs={2} onCl>
+          <Profile onClick={() => navigate(`/profile/${userId}`)} />
         </Col>
       </Row>
     </Container>

@@ -31,7 +31,7 @@ const TopNavBar = ({
             src={NavLogo}
             alt="Logo"
             onClick={() => {
-              navigate("/landing˝");
+              navigate("/landing");
             }}
           />
           <SearchBar />

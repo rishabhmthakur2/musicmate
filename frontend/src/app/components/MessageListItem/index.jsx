@@ -1,5 +1,6 @@
 import { Row, Col } from "react-bootstrap";
 import "./index.scss";
+import { useNavigate } from "react-router-dom";
 
 const MessageListItem = ({
   profilePic,
@@ -7,9 +8,26 @@ const MessageListItem = ({
   messagePreview,
   messageTime,
   unread,
+  senderId,
+  receiverId,
+  messages,
 }) => {
+  const navigate = useNavigate();
   return (
-    <div className="message-details" style={{ marginLeft: "20px" }}>
+    <div
+      className="message-details"
+      style={{ marginLeft: "20px" }}
+      onClick={() => {
+        navigate("/messages/view", {
+          state: {
+            senderId,
+            receiverId,
+            messages,
+            userName,
+          },
+        });
+      }}
+    >
       <Row className="flex-row align-items-center" style={{ height: "67px" }}>
         <Col xs={1}>
           <img
@@ -33,9 +51,7 @@ const MessageListItem = ({
             >
               {userName}
             </div>
-            <div className={
-                unread ? "message-time-unread" : "message-time"
-              }>
+            <div className={unread ? "message-time-unread" : "message-time"}>
               {messagePreview} ... {messageTime}
             </div>
           </Row>

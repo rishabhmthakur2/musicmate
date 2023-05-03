@@ -6,7 +6,7 @@
 }
 
 .message-container {
-  flex: 1;
+  display: flexbox;
   overflow-y: scroll;
   padding: 20px;
 }

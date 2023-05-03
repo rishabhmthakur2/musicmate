@@ -24,11 +24,14 @@ const Profile = () => {
   const [isUserLocationVisible, setIsUserLocationVisible] = useState("");
   const [userName, setUserName] = useState("");
   const [userHeading, setUserHeading] = useState("");
+  const [isProfileOwner, setIsProfileOwner] = useState(false);
+  const [isInEditingMode, setIsInEditingMode] = useState(false);
 
   useEffect(() => {
     const getProfileData = async () => {
       const userData = JSON.parse(localStorage.getItem("loggedUser"));
       if (userData._id === userId) {
+        setIsProfileOwner(true);
         setSkills([...userData.Skills]);
         setIsSkillVisible(userData.SkillsFlag);
         setGenres([...userData.Genres]);
@@ -129,20 +132,36 @@ const Profile = () => {
             <img src={Location} /> {userLocation}
           </span>
         </div>
-        <Button
-          className="primary-btn"
-          style={{ marginTop: "40px" }}
-          type="submit"
-        >
-          Message
-        </Button>
-        <Button
-          className="secondary-btn"
-          style={{ marginTop: "5px" }}
-          type="submit"
-        >
-          Save Profile
-        </Button>
+        {!isProfileOwner && (
+          <>
+            <Button
+              className="primary-btn"
+              style={{ marginTop: "40px" }}
+              type="submit"
+            >
+              Message
+            </Button>
+            <Button
+              className="secondary-btn"
+              style={{ marginTop: "5px" }}
+              type="submit"
+            >
+              Save Profile
+            </Button>
+          </>
+        )}
+        {isProfileOwner && (
+          <Button
+            className="primary-btn"
+            style={{ marginTop: "40px" }}
+            type="submit"
+            onClick={() => {
+              navigate("/basicinfo");
+            }}
+          >
+            Edit Profile
+          </Button>
+        )}
       </div>
       <div
         style={{

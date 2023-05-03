@@ -2,16 +2,25 @@ import "./chat.scss";
 import { Row, Col } from "react-bootstrap";
 import { ReactComponent as Send } from "../../../assets/icons/sendMessage.svg";
 import { ReactComponent as BackArrow } from "../../../assets/icons/back.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Profile from "../../../assets/icons/profile.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const Chat = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   const [inputText, setInputText] = useState("");
+  const [loggedInUserId, setLoggedInUserId] = useState("");
   const handleTextChange = (event) => {
     setInputText(event.target.value);
   };
+  const { userName, messages, senderId, receiverId } = location.state;
+  const updatedMessages = [...messages].reverse();
+  useEffect(() => {
+    setLoggedInUserId(JSON.parse(localStorage.getItem("loggedUser"))._id);
+  }, []);
+
   return (
     <>
       <div
@@ -45,30 +54,30 @@ const Chat = () => {
           </Col>
           <Col xs={8} style={{ marginLeft: "25px", alignSelf: "center" }}>
             <Row>
-              <p className="user-name-heading">Oliver Stone</p>
+              <p className="user-name-heading" style={{ textAlign: "center" }}>
+                {userName}
+              </p>
             </Row>
           </Col>
         </Row>
         <div class="chat-container">
           <div class="message-container">
-            <div class="message-bubble right">
-              <p>Hi how’s it going?</p>
-            </div>
-            <div class="message-bubble right">
-              <p>Have you worked on anything new lately?</p>
-            </div>
-            <div class="message-bubble right">
-              <p>I’ve been experiencing this “writer’s block” lately lol</p>
-            </div>
-            <div class="message-bubble left">
-              <p>Oh hello hello! I’m fine</p>
-            </div>
-            <div class="message-bubble left">
-              <p>I do have a new piece, but can I ttyl? I am actually driving right now.</p>
-            </div>
-            <div class="message-bubble left">
-              <p>Hey have you checked out my latest post? That’s the piece I worked on.</p>
-            </div>
+            {updatedMessages.map((message, i) => {
+              return (
+                <>
+                  <div
+                    class={
+                      loggedInUserId == message.sender_id
+                        ? "message-bubble right"
+                        : "message-bubble left"
+                    }
+                  >
+                    <p>{message.message_content}</p>
+                  </div>
+                  <br />
+                </>
+              );
+            })}
           </div>
           <Row className="input-container d-flex align-items-baseline">
             <Col xs={9}>
@@ -83,9 +92,28 @@ const Chat = () => {
             <Col xs={2}>
               <Send
                 className="paper-plane"
-                onClick={() => {
+                onClick={async () => {
                   console.log({ message: inputText });
-                  setInputText("");
+                  try {
+                    const sendMessage = await axios.post(
+                      "http://localhost:8000/messages",
+                      {
+                        senderId: senderId,
+                        receiverId: receiverId,
+                        messageContent: inputText,
+                      }
+                    );
+                    if (sendMessage.status === 200) {
+                      messages.unshift({
+                        sender_id: senderId,
+                        receiver_id: receiverId,
+                        message_content: inputText,
+                      });
+                      setInputText("");
+                    }
+                  } catch (e) {
+                    console.log("Something went wrong");
+                  }
                 }}
               />
             </Col>
