@@ -6,6 +6,7 @@ const gigSchema = mongoose.Schema({
   Userid: String,
   Name: String,
   LocationName: String,
+  CompanyName: String,
   Location: { Lat: Number, Long: Number },
   Timestamp: { type: Date, default: Date.now },
   EventLengthInMinutes: Number,

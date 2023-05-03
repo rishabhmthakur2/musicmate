@@ -79,6 +79,7 @@ router.post("/", (req, res, next) => {
     Userid: req.body.UserId,
     LocationName: req.body.LocationName,
     Location: req.body.Location,
+    CompanyName: req.body.CompanyName,
     Timestamp: req.body.Timestamp,
     EventLengthInMinutes: req.body.EventLengthInMinutes,
     Genres: req.body.Genres,
