@@ -9,7 +9,8 @@ let {
 const postSchema = mongoose.Schema({
   _id: mongoose.Types.ObjectId,
   Userid: String,
-  Text: String,
+  Title: String,
+  Description: String,
   MediaId: { type: String, default: "" }, // optional
   Timestamp: { type: Date, default: Date.now },
   Genres: {

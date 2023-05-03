@@ -79,13 +79,17 @@ router.post("/", (req, res, next) => {
     _id: new mongoose.Types.ObjectId(),
     UserId: req.body.UserId,
     URL: req.body.URL,
+    Title: req.body.Title,
+    Genres: req.body.Genres,
+    Description: req.body.Description,
+    ThumbnailSrc: req.body.ThumbnailSrc,
     ShowOnProfile: req.body.ShowOnProfile,
   });
 
   mediaItems.save().then;
 
   res.status(200).json({
-    message: "Handling GET request on /",
+    message: "Handling POST request on /",
     createdMediaItems: mediaItems,
   });
 });
@@ -110,7 +114,6 @@ router.post("/", (req, res, next) => {
 router.patch("/:id", async (request, response) => {
   try {
     await MediaItems.findByIdAndUpdate(request.params.id, request.body);
-    // await MediaItems.save();
     response.send("updated mediaItems" + request.params.id);
   } catch (error) {
     console.log(error);
