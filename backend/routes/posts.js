@@ -75,21 +75,62 @@ router.get("/", function (req, res) {
  *      '200':
  *        description: success message about the new post
  */
-router.post("/", (req, res, next) => {
-  const mediaItems = new MediaItems({
-    _id: new mongoose.Types.ObjectId(),
-    UserId: req.body.mediaId.UserId,
-    URL: req.body.mediaId.URL,
-    ShowOnProfile: req.body.mediaId.ShowOnProfile,
-  });
+// router.post("/", async (req, res, next) => {
+//   const mediaItems = new MediaItems({
+//     _id: new mongoose.Types.ObjectId(),
+//     UserId: req.body.mediaId.UserId,
+//     URL: req.body.mediaId.URL,
+//     ShowOnProfile: req.body.mediaId.ShowOnProfile,
+//   });
 
-  mediaItems.save().then;
+//   console.log(mediaItems);
+//   await mediaItems.save((err, obj) => {
+//     if (err) {
+//       console.error(err);
+//       res.status(500).send(err.message);
+//     } else {
+//       const temp = mediaItems._id.toString();
+//       const post = new Post({
+//         _id: new mongoose.Types.ObjectId(),
+//         Userid: req.body.Userid,
+//         Text: req.body.Text,
+//         MediaId: temp,
+//         Genres: req.body.Genres,
+//         Skills: req.body.Skills,
+//       });
+
+//       post.save().then;
+
+//       res.status(200).json({
+//         message: "Handling POST request on /",
+//         createdPost: post,
+//       });
+//     }
+//   });
+
+//   // await mediaItems.save().then;
+//   // const temp = mediaItems._id.toString();
+// });
+
+router.post("/", async (req, res, next) => {
+  var temp = "";
+
+  if (req.body.mediaId) {
+    const mediaItems = new MediaItems({
+      _id: new mongoose.Types.ObjectId(),
+      UserId: req.body.mediaId.UserId,
+      URL: req.body.mediaId.URL,
+      ShowOnProfile: req.body.mediaId.ShowOnProfile,
+    });
+    await mediaItems.save().then;
+    temp = mediaItems._id;
+  }
 
   const post = new Post({
     _id: new mongoose.Types.ObjectId(),
     Userid: req.body.Userid,
     Text: req.body.Text,
-    mediaId: mediaItems._id,
+    MediaId: temp,
     Genres: req.body.Genres,
     Skills: req.body.Skills,
   });
