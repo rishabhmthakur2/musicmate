@@ -21,6 +21,10 @@ const postSchema = mongoose.Schema({
     type: [String],
     default: [""],
   },
+  ShowOnProfile: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 module.exports = mongoose.model("Post", postSchema);
