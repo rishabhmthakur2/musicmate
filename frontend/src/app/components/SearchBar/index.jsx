@@ -1,5 +1,6 @@
 import { FaSearch } from "react-icons/fa";
 import "./search.scss";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = ({ onSearchEvent }) => {
   const handleKeyUp = (event) => {
@@ -8,10 +9,19 @@ const SearchBar = ({ onSearchEvent }) => {
       onSearchEvent(searchText);
     }
   };
+  const navigate = useNavigate();
+
   return (
     <div className="search-bar">
       <FaSearch className="search-icon" />
-      <input type="text" placeholder="Search for..." onKeyUp={handleKeyUp} />
+      <input
+        type="text"
+        placeholder="Search for..."
+        onKeyUp={handleKeyUp}
+        onClick={() => {
+          navigate("/search");
+        }}
+      />
     </div>
   );
 };

@@ -6,7 +6,7 @@ import "./navBar.scss";
 import { useNavigate } from "react-router-dom";
 
 const TopNavBar = ({
-  isSearch = true,
+  isSearch = false,
   selectedFilters,
   filterOptions,
   handleFilterChange,
