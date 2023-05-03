@@ -12,8 +12,14 @@ const postSchema = mongoose.Schema({
   Text: String,
   MediaId: { type: String, default: "" }, // optional
   Timestamp: { type: Date, default: Date.now },
-  Genres: Genres,
-  Skills: Skills,
+  Genres: {
+    type: [String],
+    default: [""],
+  },
+  Skills: {
+    type: [String],
+    default: [""],
+  },
 });
 
 module.exports = mongoose.model("Post", postSchema);

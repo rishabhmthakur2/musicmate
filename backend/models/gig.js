@@ -9,10 +9,22 @@ const gigSchema = mongoose.Schema({
   Location: { Lat: Number, Long: Number },
   Timestamp: { type: Date, default: Date.now },
   EventLengthInMinutes: Number,
-  Genres: Genres,
-  Skills: Skills,
-  GigType: GigType,
-  RequiredProficiency: MusicalExpertise,
+  Genres: {
+    type: [String],
+    default: [""],
+  },
+  Skills: {
+    type: [String],
+    default: [""],
+  },
+  GigType: {
+    type: [String],
+    default: [""],
+  },
+  RequiredProficiency: {
+    type: [String],
+    default: [""],
+  },
   Description: String,
 });
 

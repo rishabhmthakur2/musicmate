@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const User = require("../models/user");
 const Gig = require("../models/gig");
 const MediaItem = require("../models/mediaItem");
+const post = require("../models/post");
 
 /**
  * @swagger
@@ -17,72 +18,85 @@ const MediaItem = require("../models/mediaItem");
  *      '200':
  *        description: a list of items relevant to the search
  */
-router.post("/", (req, res, next) => {
-  const searchTypes = req.body.searchTypes; // allowed types: "gigs", "users", "mediaItems"
-  const searchFilter = req.body.searchFilter;
+router.post("/", async (req, res, next) => {
+  let searchTypes = [];
+  searchTypes = req.body.searchTypes; // allowed types: "gigs", "users", "posts"
+  const searchText = req.body.searchText;
+  let result = {};
 
-  searchTypes.forEach((searchType) => {
-    if (searchType == "users") {
-      User.find(
+  if (searchTypes.includes("users")) {
+    let query = {
+      $or: [
         {
-          $or: [
-            {
-              FirstName: req.body.searchText,
-            },
-            {
-              LastName: req.body.searchText,
-            },
-          ],
-          $and: [
-            { genre: searchFilter.genre },
-            { experienceLevel: searchFilter.experienceLevel },
-            { lookingToPlay: searchFilter.lookingToPlay },
-            { musicalSkill: searchFilter.musicalSkill },
-          ],
+          FirstName: { $regex: searchText, $options: "i" },
         },
-        function (err, users) {
-          let userMap = {};
-          users.forEach(function (user) {
-            userMap[user._id] = user;
-          });
-
-          res.send(userMap);
-        }
-      );
-    } else if (searchType === "gigs") {
-      Gig.find(
         {
-          name: req.body.searchText,
-          $and: [
-            { GigType: searchFilter.employmentType },
-            { RequiredProficiency: searchFilter.experienceLevel },
-          ],
+          LastName: { $regex: searchText, $options: "i" },
         },
-        function (err, gigs) {
-          let gigsMap = {};
-          gigs.forEach(function (gig) {
-            gigsMap[gig._id] = gig;
-          });
-
-          res.send(gigMap);
-        }
-      );
-    } else if (searchType === "mediaItems") {
-      MediaItem.find(
         {
-          Name: req.body.searchText,
+          Genres: { $regex: searchText, $options: "i" },
         },
-        function (err, mediaItems) {
-          let mediaMap = {};
-          mediaItems.forEach(function (media) {
-            mediaMap[media._id] = media;
-          });
+        {
+          Skills: { $regex: searchText, $options: "i" },
+        },
+        {
+          OnboardingReasons: { $regex: searchText, $options: "i" },
+        },
+      ],
+    };
+    const users = await User.find(query);
+    result["users"] = users;
+  }
 
-          res.send(mediaMap);
-        }
-      );
-    }
-  });
+  if (searchTypes.includes("gigs")) {
+    let query = {
+      $or: [
+        {
+          Name: { $regex: searchText, $options: "i" },
+        },
+        {
+          LocationName: { $regex: searchText, $options: "i" },
+        },
+        {
+          Genres: { $regex: searchText, $options: "i" },
+        },
+        {
+          Skills: { $regex: searchText, $options: "i" },
+        },
+        {
+          GigType: { $regex: searchText, $options: "i" },
+        },
+        {
+          RequiredProficiency: { $regex: searchText, $options: "i" },
+        },
+        {
+          Description: { $regex: searchText, $options: "i" },
+        },
+      ],
+    };
+    const gigs = await Gig.find(query);
+    result["gigs"] = gigs;
+  }
+
+  if (searchTypes.includes("posts")) {
+    let query = {
+      $or: [
+        {
+          Text: { $regex: searchText, $options: "i" },
+        },
+        {
+          Genres: { $regex: searchText, $options: "i" },
+        },
+        {
+          Skills: { $regex: searchText, $options: "i" },
+        },
+      ],
+    };
+    const posts = await post.find(query);
+    result["posts"] = posts;
+  }
+
+  res.status(200).send(result);
 });
 
 module.exports = router;
