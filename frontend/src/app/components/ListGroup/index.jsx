@@ -45,20 +45,18 @@ const ListGroup = ({
                   profilePic={MMLogo}
                   heading={
                     resultType === "Gigs"
-                      ? object.Name
+                      ? object?.Name
                       : resultType === "People"
-                      ? object.FirstName + " " + object.LastName
-                      : object.Text
+                      ? object?.FirstName + " " + object?.LastName
+                      : object?.Title
                   }
                   subheading={object.Skills}
                   caption={
                     resultType === "Gigs"
-                      ? object.LocationName
+                      ? object?.LocationName
                       : resultType === "People"
                       ? object?.Location?.city
-                      : object.Genres
-                      ? "Genres: " + object.Genres
-                      : ""
+                      : object?.Description
                   }
                   // isBookmarked={true}
                 />
