@@ -13,6 +13,7 @@ import Chat from "app/pages/Chat";
 import Search from "app/pages/Search";
 import Profile from "app/pages/Profile";
 import TestPage from "app/pages/Test";
+import Create from "app/pages/Create";
 
 function App() {
   return (
@@ -55,6 +56,9 @@ function App() {
           {" "}
         </Route>
         <Route path="/test" element={<TestPage />}>
+          {" "}
+        </Route>
+        <Route path="/create" element={<Create />}>
           {" "}
         </Route>
       </Routes>
