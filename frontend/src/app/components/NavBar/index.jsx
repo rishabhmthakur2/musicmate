@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 // import "./navbar.scss";
 import { ReactComponent as Home } from "../../../assets/icons/home.svg";
 import { ReactComponent as Bookmark } from "../../../assets/icons/bookmarks.svg";
@@ -7,7 +7,6 @@ import { ReactComponent as Gigs } from "../../../assets/icons/gigs.svg";
 import { ReactComponent as Profile } from "../../../assets/icons/profile.svg";
 import { Row, Container, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
 
 function NavBar(props) {
   const [userId, setUserId] = useState("");
@@ -55,7 +54,7 @@ function NavBar(props) {
         <Col xs={2}>
           <Gigs />
         </Col>
-        <Col xs={2} onCl>
+        <Col xs={2}>
           <Profile onClick={() => navigate(`/profile/${userId}`)} />
         </Col>
       </Row>

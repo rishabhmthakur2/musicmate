@@ -120,8 +120,13 @@ router.post("/", async (req, res, next) => {
       _id: new mongoose.Types.ObjectId(),
       UserId: req.body.mediaId.UserId,
       URL: req.body.mediaId.URL,
+      Title: req.body.mediaId.Title,
+      Genres: req.body.mediaId.Genres,
+      Description: req.body.mediaId.Description,
+      ThumbnailSrc: req.body.mediaId.ThumbnailSrc,
       ShowOnProfile: req.body.mediaId.ShowOnProfile,
     });
+
     await mediaItems.save().then;
     temp = mediaItems._id;
   }
@@ -129,7 +134,7 @@ router.post("/", async (req, res, next) => {
   const post = new Post({
     _id: new mongoose.Types.ObjectId(),
     Userid: req.body.Userid,
-    Text: req.body.Text,
+    Title: req.body.Title,
     MediaId: temp,
     Genres: req.body.Genres,
     Skills: req.body.Skills,

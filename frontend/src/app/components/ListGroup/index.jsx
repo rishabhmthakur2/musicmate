@@ -1,8 +1,22 @@
 import ListItem from "app/components/ListItem";
 import MMLogo from "../../../assets/icons/MusicMate List Item Logo.svg";
 import "./listGroup.scss";
-import { Container, Row, Col } from "react-bootstrap";
-const ListGroup = ({ groupName, listData, isCompressedView }) => {
+import { Row, Col } from "react-bootstrap";
+import { useState } from "react";
+const ListGroup = ({
+  groupName,
+  listData,
+  isCompressedView,
+  setIsCompressedView,
+  resultType,
+}) => {
+  const [numberOfItemsToShow, setNumberOfItemsToShow] = useState(3);
+
+  const onExpandResults = () => {
+    setIsCompressedView(false);
+    setNumberOfItemsToShow(listData.length);
+  };
+
   return (
     <>
       <div
@@ -24,31 +38,32 @@ const ListGroup = ({ groupName, listData, isCompressedView }) => {
           >
             {groupName}
           </div>
-          <Row>
-            <ListItem
-              profilePic={MMLogo}
-              heading={"Oliver Stone"}
-              subheading={"Tupper & Reed"}
-              caption={"Berkeley, CA"}
-              // isBookmarked={true}
-            />
-          </Row>
-          <Row>
-            <ListItem
-              profilePic={MMLogo}
-              heading={"Oliver Stone"}
-              subheading={"Tupper & Reed"}
-              caption={"Berkeley, CA"}
-            />
-          </Row>
-          <Row>
-            <ListItem
-              profilePic={MMLogo}
-              heading={"Oliver Stone"}
-              subheading={"Tupper & Reed"}
-              caption={"Berkeley, CA"}
-            />
-          </Row>
+          {listData.slice(0, numberOfItemsToShow).map((object, index) => {
+            return (
+              <Row>
+                <ListItem
+                  profilePic={MMLogo}
+                  heading={
+                    resultType === "Gigs"
+                      ? object?.Name
+                      : resultType === "People"
+                      ? object?.FirstName + " " + object?.LastName
+                      : object?.Title
+                  }
+                  subheading={object.Skills}
+                  caption={
+                    resultType === "Gigs"
+                      ? object?.LocationName
+                      : resultType === "People"
+                      ? object?.Location?.city
+                      : object?.Description
+                  }
+                  // isBookmarked={true}
+                />
+              </Row>
+            );
+          })}
+
           {isCompressedView && (
             <div
               style={{
@@ -64,6 +79,7 @@ const ListGroup = ({ groupName, listData, isCompressedView }) => {
                 paddingBottom: "10px",
                 borderBottom: "4px solid #CDE0FF",
               }}
+              onClick={onExpandResults}
             >
               See all {groupName.toLowerCase()} results
             </div>

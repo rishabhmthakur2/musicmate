@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Container } from "react-bootstrap";
 import SearchBar from "../SearchBar";
 import NavLogo from "../../../assets/images/navLogo.svg";
@@ -7,10 +6,11 @@ import "./navBar.scss";
 import { useNavigate } from "react-router-dom";
 
 const TopNavBar = ({
-  isSearch = false,
+  isSearch = true,
   selectedFilters,
   filterOptions,
   handleFilterChange,
+  onSearchEvent,
 }) => {
   const navigate = useNavigate();
   return (
@@ -34,7 +34,7 @@ const TopNavBar = ({
               navigate("/landing");
             }}
           />
-          <SearchBar />
+          <SearchBar onSearchEvent={onSearchEvent} />
           <img
             className="profile-icon"
             src={Message}
