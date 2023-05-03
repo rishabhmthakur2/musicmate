@@ -20,11 +20,11 @@ const post = require("../models/post");
  */
 router.post("/", async (req, res, next) => {
   let searchTypes = [];
-  searchTypes = req.body.searchTypes; // allowed types: "gigs", "users", "posts"
+  searchTypes = req.body.searchTypes; // allowed types: ["Gigs", "People", "Posts"]
   const searchText = req.body.searchText;
   let result = {};
 
-  if (searchTypes.includes("users")) {
+  if (searchTypes.includes("People")) {
     let query = {
       $or: [
         {
@@ -48,7 +48,7 @@ router.post("/", async (req, res, next) => {
     result["users"] = users;
   }
 
-  if (searchTypes.includes("gigs")) {
+  if (searchTypes.includes("Gigs")) {
     let query = {
       $or: [
         {
@@ -78,7 +78,7 @@ router.post("/", async (req, res, next) => {
     result["gigs"] = gigs;
   }
 
-  if (searchTypes.includes("posts")) {
+  if (searchTypes.includes("Posts")) {
     let query = {
       $or: [
         {
