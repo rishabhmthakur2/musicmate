@@ -136,6 +136,8 @@ router.post("/", async (req, res, next) => {
     Userid: req.body.Userid,
     Title: req.body.Title,
     MediaId: temp,
+    Description: req.body.Description,
+    ShowOnProfile: req.body.ShowOnProfile,
     Genres: req.body.Genres,
     Skills: req.body.Skills,
   });

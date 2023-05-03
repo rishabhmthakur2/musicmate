@@ -2,10 +2,15 @@ import { useEffect, useState } from "react";
 import { Form, Row, Container } from "react-bootstrap";
 import BadgeMain from "app/pages/upload/components/Badge";
 
-const AutocompleteDropdown = ({ options, selectedGenres, setSelectedGenres }) => {
+const AutocompleteDropdown = ({
+  options,
+  selectedGenres,
+  setSelectedGenres,
+  title = "Genres",
+  placeholder = "e.g. Pop or Country",
+}) => {
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  
 
   const handleInputChange = (event) => {
     const value = event.target.value;
@@ -34,14 +39,14 @@ const AutocompleteDropdown = ({ options, selectedGenres, setSelectedGenres }) =>
 
   return (
     <div>
-      <Form.Group className="mb-4 mt-2">
+      <Form.Group className="mb-4">
         <Form.Label className="desc-text">
-          Genres <span style={{ color: "#3A86FF" }}>(required)</span>
+          {title} <span style={{ color: "#3A86FF" }}>(required)</span>
         </Form.Label>
         <Form.Control
           className="p-2 auth-input-wrap mb-2"
           type="text"
-          placeholder="e.g. Pop or Country"
+          placeholder={placeholder}
           onChange={handleInputChange}
           list="places"
           value={inputValue}
@@ -54,14 +59,14 @@ const AutocompleteDropdown = ({ options, selectedGenres, setSelectedGenres }) =>
             <option key={index} value={suggestion} />
           ))}
         </datalist>
-        <Container className="p-0">
+        <div className="p-0">
           <Row className="mb-2 d-flex">
             <BadgeMain
               options={selectedGenres}
               setOptions={removeSelectedGenre}
             />
           </Row>
-        </Container>
+        </div>
       </Form.Group>
     </div>
   );

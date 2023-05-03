@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "react-bootstrap";
-import { Container, Row, Form, Col } from "react-bootstrap";
+import { Row, Form, Col } from "react-bootstrap";
 import { ArrowRight, ArrowLeft } from "react-bootstrap-icons";
 import BIHeader from "./components/BIHeader";
 import "./biinfo.scss";

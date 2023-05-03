@@ -49,7 +49,7 @@ function NavBar(props) {
           <Bookmark />
         </Col>
         <Col xs={2}>
-          <NewPost />
+          <NewPost onClick={() => navigate(`/create`)} />
         </Col>
         <Col xs={2}>
           <Gigs />
