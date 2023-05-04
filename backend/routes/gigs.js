@@ -3,6 +3,7 @@ var router = express.Router();
 const mongoose = require("mongoose");
 
 const Gig = require("../models/gig");
+const User = require("../models/user");
 
 /**
  * @swagger
@@ -28,8 +29,18 @@ router.get("/:id", async (request, response) => {
   } else {
     try {
       const output = await Gig.find({ _id: request.params.id });
+      tempUserId = output[0]["Userid"];
+      const useroutput = await User.find({ _id: tempUserId });
+
+      var fullName =
+        useroutput[0]["FirstName"] + " " + useroutput[0]["LastName"];
+
       try {
-        response.status(200).send(output);
+        response.status(200).send({
+          data: output,
+          UserId: tempUserId,
+          fullName: fullName,
+        });
       } catch (error) {
         response.status(500).send(error);
       }

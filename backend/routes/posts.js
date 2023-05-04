@@ -140,6 +140,7 @@ router.post("/", async (req, res, next) => {
     ShowOnProfile: req.body.ShowOnProfile,
     Genres: req.body.Genres,
     Skills: req.body.Skills,
+    ThumbnailSrc: req.body.ThumbnailSrc,
   });
 
   post.save().then;
