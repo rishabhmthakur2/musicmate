@@ -63,6 +63,7 @@ const Search = () => {
                   isCompressedView={isCompressedView}
                   setIsCompressedView={setIsCompressedView}
                   resultType={selectedFilter}
+                  setSelectedFilters={setSelectedFilters}
                 />
               );
             }

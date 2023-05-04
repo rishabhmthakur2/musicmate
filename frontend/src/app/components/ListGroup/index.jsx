@@ -9,12 +9,14 @@ const ListGroup = ({
   isCompressedView,
   setIsCompressedView,
   resultType,
+  setSelectedFilters,
 }) => {
   const [numberOfItemsToShow, setNumberOfItemsToShow] = useState(3);
 
   const onExpandResults = () => {
     setIsCompressedView(false);
     setNumberOfItemsToShow(listData.length);
+    setSelectedFilters([groupName]);
   };
 
   return (
