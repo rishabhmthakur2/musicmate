@@ -22,9 +22,8 @@ const Gig = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const getGigData = async () => {
-      const gigId = "6452fe5227c4f54dc7a0dcf9";
       const gigData = await axios.get(`http://localhost:8000/gigs/${id}`);
-
+      console.log({ gigData });
       if (gigData.status === 200) {
         const data = gigData.data[0];
         setGigName(data.Name);
