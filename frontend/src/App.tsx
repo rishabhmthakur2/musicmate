@@ -14,6 +14,7 @@ import Search from "app/pages/Search";
 import Profile from "app/pages/Profile";
 import TestPage from "app/pages/Test";
 import Create from "app/pages/Create";
+import Bookmarks from "app/pages/Bookmarks";
 
 function App() {
   return (
@@ -59,6 +60,9 @@ function App() {
           {" "}
         </Route>
         <Route path="/create" element={<Create />}>
+          {" "}
+        </Route>
+        <Route path="/bookmarks" element={<Bookmarks />}>
           {" "}
         </Route>
       </Routes>

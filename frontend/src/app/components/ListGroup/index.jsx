@@ -2,7 +2,7 @@ import ListItem from "app/components/ListItem";
 import MMLogo from "../../../assets/icons/MusicMate List Item Logo.svg";
 import "./listGroup.scss";
 import { Row, Col } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const ListGroup = ({
   groupName,
   listData,
@@ -53,7 +53,7 @@ const ListGroup = ({
                         ? object?.FirstName + " " + object?.LastName
                         : object?.Title
                     }
-                    subheading={object.Skills}
+                    subheading={object?.Skills}
                     caption={
                       resultType === "Gigs"
                         ? object?.LocationName
@@ -84,7 +84,7 @@ const ListGroup = ({
                 }}
                 onClick={onExpandResults}
               >
-                See all {groupName.toLowerCase()} results
+                See all {groupName.toLowerCase()}
               </div>
             )}
           </Col>

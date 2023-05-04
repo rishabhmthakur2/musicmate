@@ -4,7 +4,6 @@ import { useState } from "react";
 const TestPage = () => {
   const [sortOptions, setSortOptions] = useState([
     { name: "Distance", checked: false, type: "radio" },
-    { name: "Most relevant", checked: true, type: "radio" },
     { name: "Most recent", checked: false, type: "radio" },
   ]);
 
@@ -40,18 +39,18 @@ const TestPage = () => {
 
   return (
     <>
-    <FilteGroup
-      groupTitle={"Sort by"}
-      options={sortOptions}
-      setOptions={handleRadioChange}
-      setState={setSortOptions}
-    />
-    <FilteGroup
-      groupTitle={"Employment Type"}
-      options={employmentOptions}
-      setOptions={handleCheckBoxChange}
-      setState={setEmploymentOptions}
-    />
+      <FilteGroup
+        groupTitle={"Sort by"}
+        options={sortOptions}
+        setOptions={handleRadioChange}
+        setState={setSortOptions}
+      />
+      <FilteGroup
+        groupTitle={"Employment Type"}
+        options={employmentOptions}
+        setOptions={handleCheckBoxChange}
+        setState={setEmploymentOptions}
+      />
     </>
   );
 };

@@ -2,6 +2,7 @@ import { Container } from "react-bootstrap";
 import SearchBar from "../SearchBar";
 import NavLogo from "../../../assets/images/navLogo.svg";
 import Message from "../../../assets/images/message.svg";
+import FilterIcon from "../../../assets/images/filter.svg";
 import "./navBar.scss";
 import { useNavigate } from "react-router-dom";
 
@@ -35,6 +36,7 @@ const TopNavBar = ({
             }}
           />
           <SearchBar onSearchEvent={onSearchEvent} />
+          <img className="profile-icon" src={FilterIcon} alt="Filter" />
           <img
             className="profile-icon"
             src={Message}

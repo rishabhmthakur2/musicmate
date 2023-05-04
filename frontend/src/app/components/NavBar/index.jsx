@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 // import "./navbar.scss";
 import { ReactComponent as Home } from "../../../assets/icons/home.svg";
-import { ReactComponent as Bookmark } from "../../../assets/icons/bookmarks.svg";
+import { ReactComponent as BookmarkIcon } from "../../../assets/icons/bookmarks.svg";
 import { ReactComponent as NewPost } from "../../../assets/icons/post.svg";
 import { ReactComponent as Gigs } from "../../../assets/icons/gigs.svg";
 import { ReactComponent as Profile } from "../../../assets/icons/profile.svg";
@@ -46,7 +46,7 @@ function NavBar(props) {
           <Home onClick={() => navigate("/landing")} />
         </Col>
         <Col xs={2}>
-          <Bookmark />
+          <BookmarkIcon onClick={() => navigate("/bookmarks")} />
         </Col>
         <Col xs={2}>
           <NewPost onClick={() => navigate(`/create`)} />
