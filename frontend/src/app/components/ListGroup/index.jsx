@@ -3,6 +3,7 @@ import MMLogo from "../../../assets/icons/MusicMate List Item Logo.svg";
 import "./listGroup.scss";
 import { Row, Col } from "react-bootstrap";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 const ListGroup = ({
   groupName,
   listData,
@@ -12,11 +13,19 @@ const ListGroup = ({
   setSelectedFilters,
 }) => {
   const [numberOfItemsToShow, setNumberOfItemsToShow] = useState(3);
-
+  const navigate = useNavigate();
   const onExpandResults = () => {
     setIsCompressedView(false);
     setNumberOfItemsToShow(listData.length);
     setSelectedFilters([groupName]);
+  };
+
+  const handleClick = (data) => {
+    if (resultType === "Gigs") {
+      navigate(`/gigs/${data._id}`);
+    } else if (resultType === "People") {
+      navigate(`/profile/${data._id}`);
+    }
   };
 
   return (
@@ -43,7 +52,11 @@ const ListGroup = ({
             </div>
             {listData.slice(0, numberOfItemsToShow).map((object, index) => {
               return (
-                <Row>
+                <Row
+                  onClick={() => {
+                    handleClick(object);
+                  }}
+                >
                   <ListItem
                     profilePic={MMLogo}
                     heading={
@@ -53,7 +66,7 @@ const ListGroup = ({
                         ? object?.FirstName + " " + object?.LastName
                         : object?.Title
                     }
-                    subheading={object?.Skills}
+                    subheading={object?.Skills.join(", ")}
                     caption={
                       resultType === "Gigs"
                         ? object?.LocationName
@@ -61,6 +74,7 @@ const ListGroup = ({
                         ? object?.Location?.city
                         : object?.Description
                     }
+                    onClick={handleClick(object)}
                     // isBookmarked={true}
                   />
                 </Row>
