@@ -25,6 +25,10 @@ const postSchema = mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  ThumbnailSrc: {
+    type: String,
+    default: "",
+  },
 });
 
 module.exports = mongoose.model("Post", postSchema);
