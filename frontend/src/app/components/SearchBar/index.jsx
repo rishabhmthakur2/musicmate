@@ -16,6 +16,7 @@ const SearchBar = ({ onSearchEvent }) => {
       <FaSearch className="search-icon" />
       <input
         type="text"
+        autoFocus
         placeholder="Search for..."
         onKeyUp={handleKeyUp}
         onClick={() => {
