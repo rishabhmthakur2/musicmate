@@ -110,8 +110,6 @@ router.get("/:id/bookmarks", async (request, response) => {
 // Pulling the feed by combining gigs and posts based on the city the user is in.
 router.get("/:id/feed", async (request, response) => {
   let tempid = request.params.id;
-  console.log("We are in here now!");
-  console.log(tempid);
   if (tempid.length != 24) {
     response.status(400).send("Please send a valid id of 24 characters");
   } else {
@@ -123,23 +121,33 @@ router.get("/:id/feed", async (request, response) => {
       const posts = await Post.find({ Userid: { $in: userIds } });
       const gigs = await Gig.find({ Userid: { $in: userIds } });
 
-      const formattedPosts = posts.map((post) => {
-        return {
-          type: "post",
-          data: post,
-          timestamp: post.Timestamp,
-        };
-      });
+      const formattedPosts = await Promise.all(
+        posts.map(async (post) => {
+          var tempUserId = post.Userid;
+          const output = await User.find({ _id: tempUserId });
+          var fullName = output[0]["FirstName"] + " " + output[0]["LastName"];
+          return {
+            type: "post",
+            data: post,
+            timestamp: post.Timestamp,
+            fullName: fullName,
+          };
+        })
+      );
 
-      console.log(formattedPosts);
-
-      const formattedGigs = gigs.map((gig) => {
-        return {
-          type: "gig",
-          data: gig,
-          timestamp: gig.Timestamp,
-        };
-      });
+      const formattedGigs = await Promise.all(
+        gigs.map(async (gig) => {
+          var tempUserId = gig.Userid;
+          const output = await User.find({ _id: tempUserId });
+          var fullName = output[0]["FirstName"] + " " + output[0]["LastName"];
+          return {
+            type: "gig",
+            data: gig,
+            timestamp: gig.Timestamp,
+            fullName: fullName,
+          };
+        })
+      );
 
       const combinedPosts = formattedPosts
         .concat(formattedGigs)
