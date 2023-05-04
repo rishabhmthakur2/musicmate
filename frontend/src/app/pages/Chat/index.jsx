@@ -16,7 +16,7 @@ const Chat = () => {
     setInputText(event.target.value);
   };
   const { userName, messages, senderId, receiverId } = location.state;
-  const updatedMessages = [...messages].reverse();
+  const updatedMessages = messages.length > 0 ? [...messages].reverse() : [];
   useEffect(() => {
     setLoggedInUserId(JSON.parse(localStorage.getItem("loggedUser"))._id);
   }, []);
@@ -62,22 +62,23 @@ const Chat = () => {
         </Row>
         <div class="chat-container">
           <div class="message-container">
-            {updatedMessages.map((message, i) => {
-              return (
-                <>
-                  <div
-                    class={
-                      loggedInUserId == message.sender_id
-                        ? "message-bubble right"
-                        : "message-bubble left"
-                    }
-                  >
-                    <p>{message.message_content}</p>
-                  </div>
-                  <br />
-                </>
-              );
-            })}
+            {updatedMessages &&
+              updatedMessages.map((message, i) => {
+                return (
+                  <>
+                    <div
+                      class={
+                        loggedInUserId == message.sender_id
+                          ? "message-bubble right"
+                          : "message-bubble left"
+                      }
+                    >
+                      <p>{message.message_content}</p>
+                    </div>
+                    <br />
+                  </>
+                );
+              })}
           </div>
           <Row className="input-container d-flex align-items-baseline">
             <Col xs={9}>

@@ -10,23 +10,30 @@ import Location from "../../../../assets/icons/location.svg";
 import NavBar from "app/components/NavBar";
 import axios from "axios";
 import BadgeSecondary from "../../BasicInformation/components/Badge/secondary";
+import Popup from "app/components/Popup";
 
 const Gig = () => {
   const { id } = useParams();
   const [skills, setSkills] = useState(["Loading"]);
+  const [showPopup, setShowPopup] = useState(false);
   const [gigType, setGigType] = useState([""]);
   const [gigDescription, setGigDescription] = useState("");
   const [gigName, setGigName] = useState("");
   const [gigCompany, setGigCompany] = useState("");
   const [gigLocation, setGigLocation] = useState("");
+  const [gigUserName, setGigUserName] = useState("");
+  const [gigUserId, setGigUserId] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
     const getGigData = async () => {
       const gigData = await axios.get(`http://localhost:8000/gigs/${id}`);
       console.log({ gigData });
       if (gigData.status === 200) {
-        const data = gigData.data[0];
-        setGigName(data.Name);
+        const data = gigData.data.data[0];
+        console.log({ data });
+        setGigUserName(gigData.data.fullName);
+        setGigUserId(gigData.data.UserId);
+        setGigName(data.Name || "Placeholder");
         setGigDescription(data.Description);
         setSkills(data.Skills);
         setGigType([data.GigType[0], data.RequiredProficiency[0] || ""]);
@@ -37,6 +44,26 @@ const Gig = () => {
     getGigData();
   }, []);
 
+  const handleMessage = async () => {
+    try {
+      const sendMessage = await axios.post("http://localhost:8000/messages", {
+        senderId: JSON.parse(localStorage.getItem("loggedUser"))._id,
+        receiverId: gigUserId,
+        messageContent: `Hey, I am interested in the "${gigName}" position if its still available`,
+      });
+      if (sendMessage.status === 200) {
+        showPopup(true);
+        setTimeout(() => {
+          showPopup(false);
+        }, 5000);
+      }
+    } catch (e) {
+      console.log("Something went wrong");
+    }
+  };
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
   return (
     <>
       <div
@@ -93,6 +120,15 @@ const Gig = () => {
               flex: "1",
             }}
           >
+            Posted by {gigUserName}
+          </div>
+          <div
+            className="desc-text"
+            style={{
+              marginTop: "10px",
+              flex: "1",
+            }}
+          >
             {gigCompany}
           </div>
           <div
@@ -111,6 +147,7 @@ const Gig = () => {
             className="primary-btn"
             style={{ marginTop: "40px" }}
             type="submit"
+            onClick={handleMessage}
           >
             Interested? Let them know!
           </Button>
@@ -219,6 +256,12 @@ const Gig = () => {
         ></div>
       </div>
       <NavBar />
+      {showPopup && (
+        <Popup
+          message="Hand tight! We have sent a message to the gig poster!"
+          onClose={handleClosePopup}
+        />
+      )}
     </>
   );
 };

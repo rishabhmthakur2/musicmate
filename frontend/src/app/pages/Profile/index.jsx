@@ -26,7 +26,6 @@ const Profile = () => {
   const [userHeading, setUserHeading] = useState("");
   const [isProfileOwner, setIsProfileOwner] = useState(false);
   const [isInEditingMode, setIsInEditingMode] = useState(false);
-
   useEffect(() => {
     const getProfileData = async () => {
       const userData = JSON.parse(localStorage.getItem("loggedUser"));
@@ -62,6 +61,25 @@ const Profile = () => {
     getProfileData();
   }, []);
   const navigate = useNavigate();
+  const handleMessage = async () => {
+    try {
+      const messageData = await axios.get(
+        `http://localhost:8000/messages/${
+          JSON.parse(localStorage.getItem("loggedUser"))._id
+        }/${userId}`
+      );
+      if (messageData.status === 200) {
+        navigate("/messages/view", {
+          state: {
+            senderId: JSON.parse(localStorage.getItem("loggedUser"))._id,
+            receiverId: userId,
+            messages: messageData.data,
+            userName: userName,
+          },
+        });
+      }
+    } catch (e) {}
+  };
   return (
     <div
       style={{
@@ -138,6 +156,7 @@ const Profile = () => {
               className="primary-btn"
               style={{ marginTop: "40px" }}
               type="submit"
+              onClick={handleMessage}
             >
               Message
             </Button>
