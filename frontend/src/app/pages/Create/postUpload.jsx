@@ -34,9 +34,14 @@ const PostUpload = ({ back }) => {
         const postCallData = await axios.post("http://localhost:8000/posts", {
           Userid: JSON.parse(localStorage.getItem("loggedUser"))._id,
           Description: postContent,
+          ShowOnProfile: showOnProfile,
         });
         if (postCallData.status === 200) {
           setShowPopup(true);
+          setTimeout(() => {
+            setShowPopup(false);
+            back();
+          }, 5000);
         }
       } catch (e) {
         console.log("Something went wrong");

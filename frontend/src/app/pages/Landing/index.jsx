@@ -1,7 +1,6 @@
 import TopNavBar from "app/components/TopBar";
 import Post from "app/components/Post";
-
-import React from "react";
+import axios from "axios";
 import NavBar from "app/components/NavBar";
 
 const Landing = () => {
@@ -16,7 +15,7 @@ const Landing = () => {
           overflowX: "hidden",
         }}
       >
-        <TopNavBar />
+        <TopNavBar isSearch={false} />
         <Post />
         <NavBar />
       </div>

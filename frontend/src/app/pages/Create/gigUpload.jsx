@@ -130,12 +130,23 @@ const GigUpload = ({ back }) => {
   const postData = async () => {
     if (postLength < 1000) {
       try {
-        // const postCallData = await axios.post("http://localhost:8000/", {
-        //   Userid: JSON.parse(localStorage.getItem("loggedUser"))._id,
-        //   Text: postContent,
-        // });
-        // console.log({ postCallData });
-        setShowPopup(true);
+        const postCallData = await axios.post("http://localhost:8000/gigs", {
+          UserId: JSON.parse(localStorage.getItem("loggedUser"))._id,
+          Name: title,
+          LocationName: city,
+          Skills: selectedSkills,
+          GigType: selectedEmpType,
+          RequiredProficiency: selectedSkillType,
+          Description: description,
+          CompanyName: company,
+        });
+        if (postCallData.status === 200) {
+          setShowPopup(true);
+          setTimeout(() => {
+            setShowPopup(false);
+            back();
+          }, 5000);
+        }
       } catch (e) {
         console.log("Something went wrong");
       }
@@ -329,11 +340,7 @@ const GigUpload = ({ back }) => {
       </div>
       <NavBar />
       {showPopup && (
-        <Popup
-          message="You post has been 
-uploaded to the MusicMate community feed "
-          onClose={handleClosePopup}
-        />
+        <Popup message="Your gig has been posted!" onClose={handleClosePopup} />
       )}
     </>
   );

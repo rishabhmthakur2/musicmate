@@ -1,11 +1,13 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
 import Profile from "../../../assets/icons/profile.svg";
 import { ReactComponent as Like } from "../../../assets/icons/like.svg";
 import { ReactComponent as Bookmark } from "../../../assets/icons/bookmark-blue.svg";
 import { ReactComponent as Message } from "../../../assets/images/message.svg";
 
-function Post(props) {
+const Post = (props) => {
+  console.log({ props });
   return (
     <Container
       fluid
@@ -54,11 +56,10 @@ function Post(props) {
               alt="User Profile Pic"
             />
           )}
-          {props?.postPreview && (
-            <div className="post-content" style={{ margin: "10px 20px 10px" }}>
-              {props.postPreview}
-            </div>
-          )}
+
+          <div className="post-content" style={{ margin: "10px 20px 10px" }}>
+            {props.postPreview}
+          </div>
           <div style={{ marginLeft: "10px" }}>
             <Like
               style={{
@@ -130,10 +131,44 @@ function Post(props) {
       )}
     </Container>
   );
-}
+};
 
 function MainBody() {
-  const posts = [
+  const [feed, setFeed] = useState([
+    {
+      type: "post",
+      data: {
+        _id: "6452e721b07a1757e76bbf83",
+        Userid: "645185faab0ca9a5190987c7",
+        Description: "Test",
+        MediaId: "",
+        Genres: [""],
+        Skills: [""],
+        ShowOnProfile: false,
+        Timestamp: "2023-05-03T22:58:41.232Z",
+        __v: 0,
+      },
+      timestamp: "2023-05-03T22:58:41.232Z",
+    },
+    {
+      type: "gig",
+      data: {
+        _id: "6452f021362e062bfb623c8f",
+        Userid: "645185faab0ca9a5190987c7",
+        LocationName: "Berkeley, California, United States",
+        CompanyName: "Berkeley University",
+        Timestamp: "2023-05-03T23:37:05.962Z",
+        Genres: [""],
+        Skills: ["Strings"],
+        GigType: ["Part time"],
+        RequiredProficiency: ["Intermediate"],
+        Description: "Please call in to know more",
+        __v: 0,
+      },
+      timestamp: "2023-05-03T23:37:05.962Z",
+    },
+  ]);
+  const [finalPost, setFinalPost] = useState([
     {
       feedType: "Post",
       profilePic: Profile,
@@ -155,11 +190,82 @@ function MainBody() {
       gigDescription:
         "Accompanying vocal and instrumental performances as assigned across many genres, including classical, musical theatre, commercial, jazz, pop and others.",
     },
-  ];
+  ]);
+  useEffect(() => {
+    const getFeedData = async () => {
+      try {
+        const feedData = await axios.get(
+          `http://localhost:8000/users/${
+            JSON.parse(localStorage.getItem("loggedUser"))._id
+          }/feed`
+        );
+        if (feedData.status === 200) setFeed(feedData.data.slice(0, 10));
+      } catch (e) {
+        console.log("Something went wrong");
+      }
+    };
+    getFeedData();
+  }, []);
+
+  useEffect(() => {
+    const posts = feed.map((feedItem) => {
+      const data = feedItem.data;
+      if (feedItem.type === "post") {
+        return {
+          feedType: "Post",
+          postPreview: data.Description || "Placholder",
+          profilePic: Profile,
+          userName:
+            feedItem.fullName ===
+            JSON.parse(localStorage.getItem("loggedUser")).FirstName +
+              " " +
+              JSON.parse(localStorage.getItem("loggedUser")).LastName
+              ? "You"
+              : feedItem.fullName,
+          timePosted:
+            new Date(data.Timestamp).toLocaleString("en-us", {
+              month: "short",
+              day: "numeric",
+            }) +
+            ", " +
+            new Date(data.Timestamp).toLocaleString("en-us", {
+              timeStyle: "short",
+            }),
+        };
+      } else {
+        return {
+          feedType: "Gig",
+          profilePic: Profile,
+          userName:
+            feedItem.fullName ===
+            JSON.parse(localStorage.getItem("loggedUser")).FirstName +
+              " " +
+              JSON.parse(localStorage.getItem("loggedUser")).LastName
+              ? "You"
+              : feedItem.fullName,
+          timePosted:
+            new Date(data.Timestamp).toLocaleString("en-us", {
+              month: "short",
+              day: "numeric",
+            }) +
+            ", " +
+            new Date(data.Timestamp).toLocaleString("en-us", {
+              timeStyle: "short",
+            }),
+          gigTitle: data.Name || "Placholder",
+          gigLocation: data.CompanyName || "Placholder",
+          gigCity: data.LocationName || "Placholder",
+          gigDescription: data.Description || "Placholder",
+        };
+      }
+    });
+    console.log({ posts });
+    setFinalPost([...posts]);
+  }, [feed]);
 
   return (
     <div className="main-body">
-      {posts.map((post) => (
+      {finalPost.map((post) => (
         <Post
           feedType={post.feedType}
           profilePic={post.profilePic}
