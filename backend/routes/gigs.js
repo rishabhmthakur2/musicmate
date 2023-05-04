@@ -77,6 +77,7 @@ router.post("/", (req, res, next) => {
   const gig = new Gig({
     _id: new mongoose.Types.ObjectId(),
     Userid: req.body.UserId,
+    Name: req.body.Name,
     LocationName: req.body.LocationName,
     Location: req.body.Location,
     CompanyName: req.body.CompanyName,
