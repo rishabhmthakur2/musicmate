@@ -14,6 +14,7 @@ import Search from "app/pages/Search";
 import Profile from "app/pages/Profile";
 import TestPage from "app/pages/Test";
 import Create from "app/pages/Create";
+import Gig from "app/pages/Gigs/Gig";
 
 function App() {
   return (
@@ -55,7 +56,7 @@ function App() {
         <Route path="/profile/:userId" element={<Profile />}>
           {" "}
         </Route>
-        <Route path="/test" element={<TestPage />}>
+        <Route path="/gigs/:id" element={<Gig />}>
           {" "}
         </Route>
         <Route path="/create" element={<Create />}>

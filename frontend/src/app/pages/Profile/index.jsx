@@ -46,7 +46,7 @@ const Profile = () => {
           `http://localhost:8000/users/${userId}`
         );
         if (userDataAPI.status === 200) {
-          const userData = userDataAPI.data;
+          const userData = userDataAPI.data[0];
           setSkills([...userData.Skills]);
           setIsSkillVisible(userData.SkillsFlag);
           setGenres([...userData.Genres]);
@@ -167,7 +167,7 @@ const Profile = () => {
         style={{
           marginTop: "40px",
           borderBottom: "4px solid #CDE0FF",
-          marginLwidth: "100vw",
+          width: "100vw",
         }}
       ></div>
       {isOnboardingReasonVisible && (
@@ -200,7 +200,7 @@ const Profile = () => {
             style={{
               marginTop: "40px",
               borderBottom: "4px solid #CDE0FF",
-              marginLwidth: "100vw",
+              width: "100vw",
             }}
           ></div>
         </>
@@ -233,7 +233,7 @@ const Profile = () => {
             style={{
               marginTop: "40px",
               borderBottom: "4px solid #CDE0FF",
-              marginLwidth: "100vw",
+              width: "100vw",
             }}
           ></div>
         </>
@@ -266,7 +266,7 @@ const Profile = () => {
             style={{
               marginTop: "40px",
               borderBottom: "4px solid #CDE0FF",
-              marginLwidth: "100vw",
+              width: "100vw",
             }}
           ></div>
         </>

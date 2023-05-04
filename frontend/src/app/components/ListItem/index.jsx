@@ -33,7 +33,7 @@ const ListItem = ({
             alt="profile pic"
           />
         </Col>
-        <Col xs={7} style={{ marginLeft: "15px" }}>
+        <Col xs={8} style={{ marginLeft: "15px" }}>
           <Row>
             <div className="heading">{heading}</div>
             <div className="subheading">{subheading}</div>
@@ -42,9 +42,7 @@ const ListItem = ({
         </Col>
         {isBookmarked && (
           <Col xs={3}>
-            <BoookmarkIcon
-              style={{ marginLeft: "30px"}}
-            />
+            <BoookmarkIcon style={{ marginLeft: "30px" }} />
           </Col>
         )}
       </Row>
