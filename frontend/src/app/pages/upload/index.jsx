@@ -40,7 +40,9 @@ const Upload = () => {
   const handleUpload = () => {
     setIsLoading(true);
     setTimeout(() => {
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
       // Upload to Backend API here
       // AWS integration already completed. Need to push the data to backend API when the user clicks Finish.
 

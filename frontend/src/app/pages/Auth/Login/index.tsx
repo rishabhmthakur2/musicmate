@@ -15,7 +15,6 @@ const StepTwo = ({}) => {
 
   const hashPassword = (password) => {
     const hash = MD5.generate(password);
-    console.log({ hash });
     return hash;
   };
   const handleSubmit = async (event) => {
@@ -31,7 +30,6 @@ const StepTwo = ({}) => {
         username: email,
         password: hashedPassword,
       });
-      console.log({ login });
       if (login.data.success) {
         const userId = login.data.userid;
         const userData = {

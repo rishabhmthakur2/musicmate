@@ -8,7 +8,7 @@ import { ReactComponent as Profile } from "../../../assets/icons/profile.svg";
 import { Row, Container, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-function NavBar(props) {
+function NavBar() {
   const [userId, setUserId] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
@@ -52,7 +52,7 @@ function NavBar(props) {
           <NewPost onClick={() => navigate(`/create`)} />
         </Col>
         <Col xs={2}>
-          <Gigs />
+          <Gigs onClick={() => navigate(`/gigs`)} />
         </Col>
         <Col xs={2}>
           <Profile onClick={() => navigate(`/profile/${userId}`)} />

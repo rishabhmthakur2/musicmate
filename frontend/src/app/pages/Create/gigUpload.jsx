@@ -38,7 +38,6 @@ const GigUpload = ({ back }) => {
       res.features &&
       setAutocompleteCities(res.features.map((place) => place.place_name));
     res.error ? setAutocompleteErr(res.error) : setAutocompleteErr("");
-    console.log(autocompleteCities);
   };
 
   const fetchPlace = async (text) => {
@@ -145,7 +144,7 @@ const GigUpload = ({ back }) => {
           setTimeout(() => {
             setShowPopup(false);
             back();
-          }, 5000);
+          }, 3000);
         }
       } catch (e) {
         console.log("Something went wrong");

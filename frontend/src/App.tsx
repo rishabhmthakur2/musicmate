@@ -16,6 +16,7 @@ import TestPage from "app/pages/Test";
 import Create from "app/pages/Create";
 import Gig from "app/pages/Gigs/Gig";
 import Bookmarks from "app/pages/Bookmarks";
+import Gigs from "app/pages/Gigs";
 
 function App() {
   return (
@@ -61,6 +62,9 @@ function App() {
           {" "}
         </Route>
         <Route path="/create" element={<Create />}>
+          {" "}
+        </Route>
+        <Route path="/gigs" element={<Gigs />}>
           {" "}
         </Route>
         <Route path="/bookmarks" element={<Bookmarks />}>

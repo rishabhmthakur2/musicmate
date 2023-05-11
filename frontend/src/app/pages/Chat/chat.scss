@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  margin-bottom: 70px;
 }
 
 .message-container {
@@ -77,6 +78,5 @@ i {
   line-height: 29px;
   display: flex;
   align-items: center;
-
   color: #373737;
 }

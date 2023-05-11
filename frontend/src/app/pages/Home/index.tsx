@@ -30,13 +30,15 @@ const Home = (props) => {
         </Col>
         <Col
           xs="12"
-          className="d-flex flex-column align-items-center justify-content-center mt-2 "
+          className="d-flex flex-column align-items-center justify-content-center"
+          style={{ marginTop: "30px" }}
         >
           <Button className="secondary-btn" onClick={() => navigate("/login")}>
             Sign In
           </Button>
           <Button
-            className="primary-btn mt-3"
+            className="primary-btn"
+            style={{ marginTop: "20px" }}
             onClick={() => navigate("/signup")}
           >
             Create Account

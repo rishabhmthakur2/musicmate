@@ -14,7 +14,6 @@ const StepFour = ({ handleNext, handlePrevious }) => {
   const [nameType, setNameType] = useState("Full Name");
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("userData"));
-    console.log({ userData });
     setNameType(userData["nameType"]);
   }, []);
 

@@ -10,6 +10,7 @@ import Location from "../../../assets/icons/location.svg";
 import NavBar from "app/components/NavBar";
 import axios from "axios";
 import BadgeSecondary from "../BasicInformation/components/Badge/secondary";
+import Loader from "app/components/Loader";
 
 const Profile = () => {
   const { userId } = useParams();
@@ -25,7 +26,7 @@ const Profile = () => {
   const [userName, setUserName] = useState("");
   const [userHeading, setUserHeading] = useState("");
   const [isProfileOwner, setIsProfileOwner] = useState(false);
-  const [isInEditingMode, setIsInEditingMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const getProfileData = async () => {
       const userData = JSON.parse(localStorage.getItem("loggedUser"));
@@ -40,6 +41,9 @@ const Profile = () => {
         setUserLocation(userData.Location.city);
         setIsUserLocationVisible(userData.LocationFlag);
         setUserName(userData.FirstName + " " + userData.LastName);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 500);
       } else {
         const userDataAPI = await axios.get(
           `http://localhost:8000/users/${userId}`
@@ -55,6 +59,9 @@ const Profile = () => {
           setUserLocation(userData.Location.city);
           setIsUserLocationVisible(userData.LocationFlag);
           setUserName(userData.FirstName + " " + userData.LastName);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 500);
         }
       }
     };
@@ -63,6 +70,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const handleMessage = async () => {
     try {
+      setIsLoading(true);
       const messageData = await axios.get(
         `http://localhost:8000/messages/${
           JSON.parse(localStorage.getItem("loggedUser"))._id
@@ -78,6 +86,9 @@ const Profile = () => {
           },
         });
       }
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
     } catch (e) {}
   };
   return (
@@ -115,171 +126,85 @@ const Profile = () => {
           />
         </Col>
       </Row>
-      <div
-        style={{
-          marginLeft: "35px",
-          marginTop: "30px",
-          width: "320px",
-          height: "100%",
-          paddingRight: "35px",
-        }}
-      >
-        <UserProfileImg />
-        <div className="auth-title" style={{ marginTop: "25px" }}>
-          {userName}
-        </div>
-        <div
-          className="desc-text"
-          style={{
-            marginTop: "20px",
-            flex: "1",
-          }}
-        >
-          {userHeading !== ""
-            ? userHeading
-            : "Freelance music technologist based in SF Bay Area"}
-        </div>
-        <div
-          className="desc-text"
-          style={{
-            marginTop: "35px",
-            flex: "1",
-          }}
-        >
-          <span>
-            <img src={Location} /> {userLocation}
-          </span>
-        </div>
-        {!isProfileOwner && (
-          <>
-            <Button
-              className="primary-btn"
-              style={{ marginTop: "40px" }}
-              type="submit"
-              onClick={handleMessage}
-            >
-              Message
-            </Button>
-            <Button
-              className="secondary-btn"
-              style={{ marginTop: "5px" }}
-              type="submit"
-            >
-              Save Profile
-            </Button>
-          </>
-        )}
-        {isProfileOwner && (
-          <Button
-            className="primary-btn"
-            style={{ marginTop: "40px" }}
-            type="submit"
-            onClick={() => {
-              navigate("/basicinfo");
-            }}
-          >
-            Edit Profile
-          </Button>
-        )}
-      </div>
-      <div
-        style={{
-          marginTop: "40px",
-          borderBottom: "4px solid #CDE0FF",
-          width: "100vw",
-        }}
-      ></div>
-      {isOnboardingReasonVisible && (
+      {isLoading ? (
+        <Loader />
+      ) : (
         <>
           <div
             style={{
               marginLeft: "35px",
-              marginTop: "25px",
+              marginTop: "30px",
               width: "320px",
               height: "100%",
               paddingRight: "35px",
             }}
           >
-            <div className="sec-title-left">Looking For:</div>
-            <ul
+            <UserProfileImg />
+            <div className="auth-title" style={{ marginTop: "25px" }}>
+              {userName}
+            </div>
+            <div
+              className="desc-text"
               style={{
-                marginTop: "25px",
+                marginTop: "20px",
+                flex: "1",
               }}
             >
-              {onboardingReasons.map((reason, i) => {
-                return (
-                  <li className="desc-text" key={i}>
-                    {reason}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-          <div
-            style={{
-              marginTop: "40px",
-              borderBottom: "4px solid #CDE0FF",
-              width: "100vw",
-            }}
-          ></div>
-        </>
-      )}
-
-      {isGenreVisible && (
-        <>
-          <div
-            style={{
-              marginLeft: "35px",
-              marginTop: "25px",
-              width: "320px",
-              height: "100%",
-              paddingRight: "35px",
-            }}
-          >
-            <div className="sec-title-left">Genre(s)</div>
-            <div
-              className="d-flex flex-column justify-content-center"
-              style={{ marginTop: "25px" }}
-            >
-              <Container className="p-0">
-                <Row className="d-flex">
-                  <BadgeSecondary options={genres} />
-                </Row>
-              </Container>
+              {userHeading !== ""
+                ? userHeading
+                : "Freelance music technologist based in SF Bay Area"}
             </div>
-          </div>
-          <div
-            style={{
-              marginTop: "40px",
-              borderBottom: "4px solid #CDE0FF",
-              width: "100vw",
-            }}
-          ></div>
-        </>
-      )}
-
-      {isSkillVisible && (
-        <>
-          <div
-            style={{
-              marginLeft: "35px",
-              marginTop: "25px",
-              width: "320px",
-              height: "100%",
-              paddingRight: "35px",
-            }}
-          >
-            <div className="sec-title-left">Skill(s)</div>
             <div
-              className="d-flex flex-column justify-content-center"
-              style={{ marginTop: "25px" }}
+              className="desc-text"
+              style={{
+                marginTop: "35px",
+                flex: "1",
+              }}
             >
-              <Container className="p-0">
-                <Row className="d-flex">
-                  <BadgeSecondary options={skills} />
-                </Row>
-              </Container>
+              <span>
+                <img src={Location} /> {userLocation}
+              </span>
             </div>
+            {!isProfileOwner && (
+              <>
+                <Button
+                  className="primary-btn"
+                  style={{ marginTop: "40px" }}
+                  type="submit"
+                  onClick={handleMessage}
+                >
+                  Message
+                </Button>
+                <Button
+                  className="secondary-btn"
+                  style={{ marginTop: "5px" }}
+                  type="submit"
+                >
+                  Save Profile
+                </Button>
+              </>
+            )}
+            {isProfileOwner && (
+              <>
+                <Button
+                  className="primary-btn"
+                  style={{ marginTop: "40px" }}
+                  type="submit"
+                  onClick={() => {
+                    navigate("/basicinfo");
+                  }}
+                >
+                  Edit Profile
+                </Button>
+                <Button
+                  className="tertiary-btn"
+                  style={{ marginTop: "10px" }}
+                  type="submit"
+                >
+                  Delete account
+                </Button>
+              </>
+            )}
           </div>
           <div
             style={{
@@ -288,6 +213,107 @@ const Profile = () => {
               width: "100vw",
             }}
           ></div>
+          {isOnboardingReasonVisible && (
+            <>
+              <div
+                style={{
+                  marginLeft: "35px",
+                  marginTop: "25px",
+                  width: "320px",
+                  height: "100%",
+                  paddingRight: "35px",
+                }}
+              >
+                <div className="sec-title-left">Looking For:</div>
+                <ul
+                  style={{
+                    marginTop: "25px",
+                  }}
+                >
+                  {onboardingReasons.map((reason, i) => {
+                    return (
+                      <li className="desc-text" key={i}>
+                        {reason}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+              <div
+                style={{
+                  marginTop: "40px",
+                  borderBottom: "4px solid #CDE0FF",
+                  width: "100vw",
+                }}
+              ></div>
+            </>
+          )}
+
+          {isGenreVisible && (
+            <>
+              <div
+                style={{
+                  marginLeft: "35px",
+                  marginTop: "25px",
+                  width: "320px",
+                  height: "100%",
+                  paddingRight: "35px",
+                }}
+              >
+                <div className="sec-title-left">Genre(s)</div>
+                <div
+                  className="d-flex flex-column justify-content-center"
+                  style={{ marginTop: "25px" }}
+                >
+                  <Container className="p-0">
+                    <Row className="d-flex">
+                      <BadgeSecondary options={genres} />
+                    </Row>
+                  </Container>
+                </div>
+              </div>
+              <div
+                style={{
+                  marginTop: "40px",
+                  borderBottom: "4px solid #CDE0FF",
+                  width: "100vw",
+                }}
+              ></div>
+            </>
+          )}
+
+          {isSkillVisible && (
+            <>
+              <div
+                style={{
+                  marginLeft: "35px",
+                  marginTop: "25px",
+                  width: "320px",
+                  height: "100%",
+                  paddingRight: "35px",
+                }}
+              >
+                <div className="sec-title-left">Skill(s)</div>
+                <div
+                  className="d-flex flex-column justify-content-center"
+                  style={{ marginTop: "25px" }}
+                >
+                  <Container className="p-0">
+                    <Row className="d-flex">
+                      <BadgeSecondary options={skills} />
+                    </Row>
+                  </Container>
+                </div>
+              </div>
+              <div
+                style={{
+                  marginTop: "40px",
+                  borderBottom: "4px solid #CDE0FF",
+                  width: "100vw",
+                }}
+              ></div>
+            </>
+          )}
         </>
       )}
 

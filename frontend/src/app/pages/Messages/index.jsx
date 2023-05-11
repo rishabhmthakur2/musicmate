@@ -7,6 +7,7 @@ import { ReactComponent as BackArrow } from "../../../assets/icons/back.svg";
 import { Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Loader from "app/components/Loader";
 
 const Messages = () => {
   const navigate = useNavigate();
@@ -21,21 +22,19 @@ const Messages = () => {
       unread: "",
     },
   ]);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const userId = JSON.parse(localStorage.getItem("loggedUser"))._id;
     setProfileUserName(
-      (
-        JSON.parse(localStorage.getItem("loggedUser")).FirstName +
+      JSON.parse(localStorage.getItem("loggedUser")).FirstName +
         " " +
         JSON.parse(localStorage.getItem("loggedUser")).LastName
-      ).toUpperCase()
     );
     const getList = async (userId) => {
       const chatListData = await axios.get(
         `http://localhost:8000/messages/chatlist/${userId}`
       );
       const chatList = chatListData.data;
-      console.log({ chatList });
       try {
         const test = await chatList.map(async (user) => {
           const chatData = await axios.get(
@@ -57,6 +56,9 @@ const Messages = () => {
       }
     };
     getList(userId);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
   }, []);
 
   return (
@@ -95,60 +97,44 @@ const Messages = () => {
             {profileUserName}
           </p>
         </Col>
-        {/* <Col xs={1}>
+      </Row>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <div style={{ margin: "20px" }}>
+            <SearchBar />
+          </div>
           <p
             style={{
+              margin: "0 20px 10px",
               fontStyle: "normal",
-              fontWeight: "600",
+              fontWeight: "700",
               fontSize: "18px",
               lineHeight: "22px",
-              backgroundColor: "#3A86FF",
-              height: "30px",
-              width: "30px",
-              borderRadius: "50px",
-              padding: "3px",
-              marginRight: "10px",
+              display: "flex",
               alignItems: "center",
-              textAlign: "center",
-              color: "#fff",
             }}
           >
-            {unreadCount}
+            Messages
           </p>
-        </Col> */}
-      </Row>
-
-      <div style={{ margin: "20px" }}>
-        <SearchBar />
-      </div>
-      <p
-        style={{
-          margin: "0 20px 10px",
-          fontStyle: "normal",
-          fontWeight: "700",
-          fontSize: "18px",
-          lineHeight: "22px",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        Messages
-      </p>
-      {chatData.map((message, i) => {
-        return (
-          <MessageListItem
-            key={i}
-            profilePic={Profile}
-            userName={message.messengerName}
-            messagePreview={message.messages[0]?.message_content}
-            messageTime={message.messageTime}
-            unread={message.unread}
-            senderId={message.userId}
-            receiverId={message.messengerId}
-            messages={message.messages}
-          />
-        );
-      })}
+          {chatData.map((message, i) => {
+            return (
+              <MessageListItem
+                key={i}
+                profilePic={Profile}
+                userName={message.messengerName}
+                messagePreview={message.messages[0]?.message_content}
+                messageTime={message.messageTime}
+                unread={message.unread}
+                senderId={message.userId}
+                receiverId={message.messengerId}
+                messages={message.messages}
+              />
+            );
+          })}
+        </>
+      )}
       <NavBar />
     </div>
   );

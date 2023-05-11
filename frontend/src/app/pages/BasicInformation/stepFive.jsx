@@ -36,7 +36,6 @@ const StepFour = ({ handleNext, handlePrevious }) => {
       SkillsFlag: userData.skills.isVisible,
       OnboardingFlag: userData.purpose.isVisible,
     };
-    console.log({ updatedUser });
     const updatedUserData = await axios.patch(
       `http://localhost:8000/users/${userData.userId}`,
       updatedUser

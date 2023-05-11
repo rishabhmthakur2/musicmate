@@ -4,6 +4,7 @@ import "./listGroup.scss";
 import { Row, Col } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const ListGroup = ({
   groupName,
   listData,
@@ -11,8 +12,11 @@ const ListGroup = ({
   setIsCompressedView,
   resultType,
   setSelectedFilters,
+  isBookmarkPage = false,
 }) => {
   const [numberOfItemsToShow, setNumberOfItemsToShow] = useState(3);
+  const [bookmarkedGigs, setBookmarkedGigs] = useState([]);
+  const [bookmarkedUsers, setBookmarkedUsers] = useState([]);
   const navigate = useNavigate();
   const onExpandResults = () => {
     setIsCompressedView(false);
@@ -28,6 +32,63 @@ const ListGroup = ({
     }
   };
 
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const userData = JSON.parse(localStorage.getItem("loggedUser"));
+        if (userData) {
+          // localStorage.setItem("loggedUser", JSON.stringify(userData.data));
+          setBookmarkedUsers([...userData["BookmarkedProfiles"]]);
+          setBookmarkedGigs([...userData["BookmarkedGigs"]]);
+        }
+      } catch (e) {
+        console.log("Something went wrong");
+      }
+    };
+    getUserData();
+  }, []);
+
+  const checkBookmark = (id, resultType) => {
+    if (resultType === "People") {
+      return bookmarkedUsers.includes(id);
+    } else if (resultType === "Gigs") {
+      return bookmarkedGigs.includes(id);
+    }
+  };
+
+  const handleBookmarkChange = (id, resultType) => {
+    let userData = JSON.parse(localStorage.getItem("loggedUser"));
+    console.log({ userData });
+    if (resultType === "Gigs") {
+      const bookmarkedGigs = [...userData["BookmarkedGigs"]];
+      if (bookmarkedGigs.includes(id)) {
+        const newArray = [...bookmarkedGigs].filter(
+          (currentId) => currentId !== id
+        );
+        userData["BookmarkedGigs"] = [...newArray];
+        localStorage.setItem("loggedUser", JSON.stringify(userData));
+        setBookmarkedGigs([...newArray]);
+      } else {
+        userData["BookmarkedGigs"] = [...bookmarkedGigs, id];
+        localStorage.setItem("loggedUser", JSON.stringify(userData));
+        setBookmarkedGigs([...bookmarkedGigs, id]);
+      }
+    } else if (resultType === "People") {
+      const bookmarkedUsers = userData["BookmarkedProfiles"];
+      if (bookmarkedUsers.includes(id)) {
+        const newArray = [...bookmarkedUsers].filter(
+          (currentId) => currentId !== id
+        );
+        userData["BookmarkedProfiles"] = [...newArray];
+        localStorage.setItem("loggedUser", JSON.stringify(userData));
+        setBookmarkedUsers([...newArray]);
+      } else {
+        userData["BookmarkedProfiles"] = [...bookmarkedUsers, id];
+        localStorage.setItem("loggedUser", JSON.stringify(userData));
+        setBookmarkedUsers([...bookmarkedUsers, id]);
+      }
+    }
+  };
   return (
     <>
       {listData.length > 0 && (
@@ -52,11 +113,7 @@ const ListGroup = ({
             </div>
             {listData.slice(0, numberOfItemsToShow).map((object, index) => {
               return (
-                <Row
-                  onClick={() => {
-                    handleClick(object);
-                  }}
-                >
+                <Row>
                   <ListItem
                     profilePic={MMLogo}
                     heading={
@@ -74,14 +131,17 @@ const ListGroup = ({
                         ? object?.Location?.city
                         : object?.Description
                     }
-                    onClick={handleClick(object)}
-                    // isBookmarked={true}
+                    onClick={() => handleClick(object)}
+                    handleBookmarkChange={() =>
+                      handleBookmarkChange(object._id, resultType)
+                    }
+                    isBookmarked={checkBookmark(object._id, resultType)}
                   />
                 </Row>
               );
             })}
 
-            {isCompressedView && (
+            {isCompressedView && listData.length > 3 && (
               <div
                 style={{
                   marginTop: "15px",

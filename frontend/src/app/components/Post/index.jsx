@@ -5,6 +5,7 @@ import Profile from "../../../assets/icons/profile.svg";
 import { ReactComponent as Like } from "../../../assets/icons/like.svg";
 import { ReactComponent as Bookmark } from "../../../assets/icons/bookmark-blue.svg";
 import { ReactComponent as Message } from "../../../assets/images/message.svg";
+import Loader from "../Loader";
 
 const Post = (props) => {
   console.log({ props });
@@ -133,64 +134,10 @@ const Post = (props) => {
   );
 };
 
-function MainBody() {
-  const [feed, setFeed] = useState([
-    {
-      type: "post",
-      data: {
-        _id: "6452e721b07a1757e76bbf83",
-        Userid: "645185faab0ca9a5190987c7",
-        Description: "Test",
-        MediaId: "",
-        Genres: [""],
-        Skills: [""],
-        ShowOnProfile: false,
-        Timestamp: "2023-05-03T22:58:41.232Z",
-        __v: 0,
-      },
-      timestamp: "2023-05-03T22:58:41.232Z",
-    },
-    {
-      type: "gig",
-      data: {
-        _id: "6452f021362e062bfb623c8f",
-        Userid: "645185faab0ca9a5190987c7",
-        LocationName: "Berkeley, California, United States",
-        CompanyName: "Berkeley University",
-        Timestamp: "2023-05-03T23:37:05.962Z",
-        Genres: [""],
-        Skills: ["Strings"],
-        GigType: ["Part time"],
-        RequiredProficiency: ["Intermediate"],
-        Description: "Please call in to know more",
-        __v: 0,
-      },
-      timestamp: "2023-05-03T23:37:05.962Z",
-    },
-  ]);
-  const [finalPost, setFinalPost] = useState([
-    {
-      feedType: "Post",
-      profilePic: Profile,
-      postImage:
-        "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y29uY2VydCUyMGNyb3dkfGVufDB8fDB8fA%3D%3D&w=1000&q=80",
-      userName: "Margaret Mulholland",
-      timePosted: "Just Now",
-      postPreview:
-        "I’m excited to share that I will soon move to New York to start my graduate studies at Berklee NYC’s Master of Arts in Creative Media and Technology program!!",
-    },
-    {
-      feedType: "Gig",
-      profilePic: Profile,
-      userName: "Michael Scott",
-      timePosted: "1 hour ago!",
-      gigTitle: "Part-Time Pianist",
-      gigLocation: "Tupper & Reed",
-      gigCity: "Berkeley, California, United States",
-      gigDescription:
-        "Accompanying vocal and instrumental performances as assigned across many genres, including classical, musical theatre, commercial, jazz, pop and others.",
-    },
-  ]);
+const MainBody = () => {
+  const [feed, setFeed] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [finalPost, setFinalPost] = useState([]);
   useEffect(() => {
     const getFeedData = async () => {
       try {
@@ -231,6 +178,7 @@ function MainBody() {
             new Date(data.Timestamp).toLocaleString("en-us", {
               timeStyle: "short",
             }),
+          postImage: data.ThumbnailSrc,
         };
       } else {
         return {
@@ -259,28 +207,36 @@ function MainBody() {
         };
       }
     });
-    console.log({ posts });
     setFinalPost([...posts]);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
   }, [feed]);
 
   return (
-    <div className="main-body">
-      {finalPost.map((post) => (
-        <Post
-          feedType={post.feedType}
-          profilePic={post.profilePic}
-          userName={post.userName}
-          timePosted={post.timePosted}
-          postPreview={post.postPreview}
-          postImage={post.postImage}
-          gigTitle={post.gigTitle}
-          gigLocation={post.gigLocation}
-          gigCity={post.gigCity}
-          gigDescription={post.gigDescription}
-        />
-      ))}
-    </div>
+    <>
+      {isLoading && <Loader />}
+      {!isLoading && (
+        <div className="main-body">
+          {finalPost.length > 0 &&
+            finalPost.map((post) => (
+              <Post
+                feedType={post.feedType}
+                profilePic={post.profilePic}
+                userName={post.userName}
+                timePosted={post.timePosted}
+                postPreview={post.postPreview}
+                postImage={post.postImage}
+                gigTitle={post.gigTitle}
+                gigLocation={post.gigLocation}
+                gigCity={post.gigCity}
+                gigDescription={post.gigDescription}
+              />
+            ))}
+        </div>
+      )}
+    </>
   );
-}
+};
 
 export default MainBody;

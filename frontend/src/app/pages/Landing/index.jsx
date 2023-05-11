@@ -2,6 +2,7 @@ import TopNavBar from "app/components/TopBar";
 import Post from "app/components/Post";
 import axios from "axios";
 import NavBar from "app/components/NavBar";
+import Loader from "app/components/Loader";
 
 const Landing = () => {
   return (

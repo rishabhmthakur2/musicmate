@@ -28,7 +28,7 @@ const MessageListItem = ({
         });
       }}
     >
-      <Row className="flex-row align-items-center" style={{ height: "67px" }}>
+      <Row className="flex-row align-items-center" style={{ height: "80px" }}>
         <Col xs={1}>
           <img
             style={{

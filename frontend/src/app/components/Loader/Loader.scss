@@ -1,16 +1,15 @@
 .spinner {
-    margin: auto;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 5px solid rgba(255, 255, 255, 0.3);
-    border-top-color: #fff;
-    animation: spinner 1s ease-in-out infinite;
+  margin: auto;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #3a86ff;
+  animation: spinner 1s ease-in-out infinite;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
   }
-  
-  @keyframes spinner {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  
+}

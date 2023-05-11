@@ -2,7 +2,7 @@ import { FaSearch } from "react-icons/fa";
 import "./search.scss";
 import { useNavigate } from "react-router-dom";
 
-const SearchBar = ({ onSearchEvent }) => {
+const SearchBar = ({ onSearchEvent, enableNavigation = true }) => {
   const handleKeyUp = (event) => {
     if (event.key === "Enter") {
       const searchText = event.target.value;
@@ -20,7 +20,7 @@ const SearchBar = ({ onSearchEvent }) => {
         placeholder="Search for..."
         onKeyUp={handleKeyUp}
         onClick={() => {
-          navigate("/search");
+          enableNavigation && navigate("/search");
         }}
       />
     </div>

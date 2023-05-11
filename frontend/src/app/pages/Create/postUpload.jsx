@@ -41,7 +41,7 @@ const PostUpload = ({ back }) => {
           setTimeout(() => {
             setShowPopup(false);
             back();
-          }, 5000);
+          }, 3000);
         }
       } catch (e) {
         console.log("Something went wrong");

@@ -1,26 +1,29 @@
 import { Row, Col } from "react-bootstrap";
 import "./index.scss";
 import { ReactComponent as BoookmarkIcon } from "../../../assets/icons/bookmarked.svg";
+import { ReactComponent as NonBoookmarkIcon } from "../../../assets/icons/non-bookmarked.svg";
 
 const ListItem = ({
   profilePic,
   heading,
   subheading,
   caption,
-  isBookmarked,
+  onClick,
+  handleBookmarkChange,
+  isBookmarked = false,
 }) => {
   return (
     <div
       className="message-details"
-      style={{ marginLeft: "20px", marginTop: "10px" }}
+      style={{ marginLeft: "20px", marginTop: "20px" }}
     >
       <Row
         className="flex-row align-items-center"
         style={{
-          height: "67px",
+          height: "auto",
         }}
       >
-        <Col xs={1}>
+        <Col xs={1} onClick={onClick}>
           <img
             style={{
               backgroundColor: "#9CC2FF",
@@ -33,7 +36,7 @@ const ListItem = ({
             alt="profile pic"
           />
         </Col>
-        <Col xs={8} style={{ marginLeft: "15px" }}>
+        <Col xs={8} style={{ marginLeft: "15px" }} onClick={onClick}>
           <Row>
             <div className="heading">{heading}</div>
             <div className="subheading">{subheading}</div>
@@ -41,8 +44,19 @@ const ListItem = ({
           </Row>
         </Col>
         {isBookmarked && (
-          <Col xs={3}>
-            <BoookmarkIcon style={{ marginLeft: "30px" }} />
+          <Col>
+            <BoookmarkIcon
+              style={{ marginLeft: "5px" }}
+              onClick={handleBookmarkChange}
+            />
+          </Col>
+        )}
+        {!isBookmarked && (
+          <Col xs={2}>
+            <NonBoookmarkIcon
+              style={{ marginLeft: "5px" }}
+              onClick={handleBookmarkChange}
+            />
           </Col>
         )}
       </Row>

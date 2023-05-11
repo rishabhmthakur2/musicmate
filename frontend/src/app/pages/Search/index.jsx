@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import ListGroup from "app/components/ListGroup";
 import NavBar from "app/components/NavBar";
 import axios from "axios";
+import Loader from "app/components/Loader";
 
 const Search = () => {
   const [isCompressedView, setIsCompressedView] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState([
     "Gigs",
     "People",
@@ -26,20 +28,25 @@ const Search = () => {
   };
 
   const onSearchEvent = async (searchText) => {
+    setIsLoading(true);
     const searchResponse = await axios.post("http://localhost:8000/search", {
       searchText: searchText,
       searchTypes: ["Gigs", "Posts", "People"],
     });
     setSearchResults(searchResponse.data);
-    console.log(searchResults);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
   };
 
   useEffect(() => {
+    setIsLoading(true);
     if (selectedFilters.length > 1) {
       setIsCompressedView(true);
     } else {
       setIsCompressedView(false);
     }
+    setIsLoading(false);
   }, [selectedFilters]);
   return (
     <>
@@ -51,8 +58,9 @@ const Search = () => {
           filterOptions={filterOptions}
           onSearchEvent={onSearchEvent}
         />
-
-        {searchResults &&
+        {isLoading && <Loader />}
+        {!isLoading &&
+          searchResults &&
           selectedFilters.map((selectedFilter) => {
             const listData = searchResults[selectedFilter];
             if (listData) {
