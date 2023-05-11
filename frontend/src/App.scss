@@ -18,6 +18,16 @@
   color: var(--primary-btn-color);
   padding: 11px;
 }
+.tertiary-btn {
+  width: 320px;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+  background: var(--white-color);
+  border-color: #9b9b9b;
+  color: #9b9b9b;
+  padding: 11px;
+}
 .main-title {
   font-weight: 700;
   font-size: 36px;
